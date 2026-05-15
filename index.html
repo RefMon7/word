@@ -7,160 +7,304 @@
 
 <style>
 
+/* ===== IOS LIQUID GLASS STYLE ===== */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
 }
 
 body{
-    background:#f3f4f6;
-    color:#222;
+    background:#111214;
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* ФОН */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at top left,#2f2f35,transparent 30%),
+        radial-gradient(circle at bottom right,#1d1d22,transparent 30%),
+        linear-gradient(180deg,#111214,#0b0b0d);
+    z-index:-2;
+}
+
+/* GLASS */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    backdrop-filter:blur(80px);
+    z-index:-1;
 }
 
 header{
-    background:#2563eb;
-    color:white;
     text-align:center;
-    padding:20px;
-    font-size:28px;
-    font-weight:bold;
+    padding:35px 20px;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:-1px;
 }
 
 .container{
     max-width:1100px;
-    margin:30px auto;
+    margin:auto;
     padding:20px;
 }
 
+/* CARD */
 .card{
-    background:white;
-    border-radius:14px;
-    padding:20px;
-    margin-bottom:20px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+
+    border-radius:30px;
+
+    padding:24px;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.45),
+        inset 0 1px 1px rgba(255,255,255,0.08);
+
+    margin-bottom:25px;
 }
 
 h2{
-    margin-bottom:15px;
-    color:#2563eb;
+    margin-bottom:18px;
+    font-size:24px;
+    font-weight:600;
 }
 
-input, textarea, select{
+/* INPUTS */
+input,
+textarea,
+select{
     width:100%;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:10px;
-    margin-top:10px;
-    font-size:15px;
-}
+    margin-top:12px;
 
-textarea{
-    min-height:100px;
-    resize:vertical;
-}
+    padding:16px 18px;
 
-button{
-    background:#2563eb;
-    color:white;
     border:none;
-    padding:12px 18px;
-    border-radius:10px;
-    cursor:pointer;
-    margin-top:15px;
-    transition:0.2s;
+    outline:none;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,0.06);
+
+    color:white;
+
     font-size:15px;
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    transition:0.2s;
 }
 
-button:hover{
-    background:#1d4ed8;
+input::placeholder,
+textarea::placeholder{
+    color:#a1a1aa;
 }
 
+input:focus,
+textarea:focus,
+select:focus{
+    border:1px solid rgba(255,255,255,0.2);
+    background:rgba(255,255,255,0.08);
+}
+
+/* BUTTONS */
+button{
+    border:none;
+    cursor:pointer;
+
+    padding:15px 22px;
+
+    border-radius:20px;
+
+    font-size:15px;
+    font-weight:600;
+
+    transition:0.25s;
+
+    margin-top:15px;
+}
+
+/* LOGIN */
+.loginBtn{
+    background:white;
+    color:black;
+}
+
+.loginBtn:hover{
+    background:#f2f2f2;
+    transform:translateY(-2px);
+}
+
+/* REGISTER */
+.registerBtn{
+    background:#2b2b31;
+    color:white;
+}
+
+.registerBtn:hover{
+    background:#3a3a42;
+    transform:translateY(-2px);
+}
+
+/* LOGOUT */
 .logout{
-    background:#ef4444;
+    background:#2b2b31;
+    color:white;
 }
 
 .logout:hover{
-    background:#dc2626;
+    background:#3b3b45;
 }
 
-.deleteBtn{
-    background:#dc2626;
+/* ORDER */
+.order{
+    margin-top:18px;
+
+    padding:20px;
+
+    border-radius:24px;
+
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.06);
+
+    transition:0.25s;
 }
 
-.deleteBtn:hover{
-    background:#b91c1c;
+.order:hover{
+    transform:translateY(-3px);
+    background:rgba(255,255,255,0.06);
 }
 
-.publishBtn{
-    background:#16a34a;
+/* CATEGORY */
+.badge{
+    display:inline-flex;
+    align-items:center;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,0.08);
+
+    color:#d4d4d8;
+
+    font-size:13px;
+
+    margin-bottom:14px;
 }
 
-.publishBtn:hover{
-    background:#15803d;
+/* PRICE */
+.price{
+    margin-top:14px;
+
+    font-size:26px;
+    font-weight:700;
+
+    color:white;
 }
 
-.hidden{
-    display:none;
-}
-
+/* TOPBAR */
 .topbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
+
     margin-bottom:20px;
 }
 
+/* ROLE */
 .role{
-    font-weight:bold;
-    color:#2563eb;
+    color:#d4d4d8;
+    font-weight:600;
 }
 
-.order{
-    border:1px solid #ddd;
-    border-radius:12px;
-    padding:15px;
-    margin-top:15px;
-}
-
-.badge{
-    display:inline-block;
-    background:#dbeafe;
-    color:#1e40af;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
-    margin-bottom:10px;
-}
-
-.price{
-    color:green;
-    font-size:22px;
-    font-weight:bold;
-    margin-top:10px;
-}
-
+/* STATUS */
 .accepted{
-    background:#dcfce7;
-    color:#166534;
-    padding:8px;
-    border-radius:8px;
-    margin-top:10px;
+    margin-top:14px;
+
+    background:rgba(34,197,94,0.12);
+
+    color:#86efac;
+
+    border:1px solid rgba(34,197,94,0.2);
+
+    padding:12px;
+
+    border-radius:16px;
 }
 
 .notPublished{
-    background:#fef3c7;
-    color:#92400e;
-    padding:8px;
-    border-radius:8px;
-    margin-top:10px;
+    margin-top:14px;
+
+    background:rgba(234,179,8,0.12);
+
+    color:#fde68a;
+
+    border:1px solid rgba(234,179,8,0.2);
+
+    padding:12px;
+
+    border-radius:16px;
 }
 
+/* ADMIN */
 .adminPanel{
-    margin-top:15px;
     display:flex;
     gap:10px;
+    margin-top:15px;
+}
+
+/* DELETE */
+.deleteBtn{
+    background:#7f1d1d;
+    color:white;
+}
+
+.deleteBtn:hover{
+    background:#991b1b;
+}
+
+/* PUBLISH */
+.publishBtn{
+    background:#14532d;
+    color:white;
+}
+
+.publishBtn:hover{
+    background:#166534;
+}
+
+/* HIDDEN */
+.hidden{
+    display:none;
+}
+
+@media(max-width:700px){
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    header{
+        font-size:26px;
+    }
+
 }
 
 </style>
@@ -174,7 +318,7 @@ button:hover{
 
 <div class="container">
 
-    <!-- АВТОРИЗАЦИЯ -->
+    <!-- AUTH -->
     <div class="card" id="authBlock">
 
         <h2>Вход / Регистрация</h2>
@@ -188,11 +332,15 @@ button:hover{
             <option value="executor">Исполнитель</option>
         </select>
 
-        <button onclick="register()">Регистрация</button>
+        <button class="registerBtn" onclick="register()">
+            Регистрация
+        </button>
 
-        <button onclick="login()">Вход</button>
+        <button class="loginBtn" onclick="login()">
+            Войти
+        </button>
 
-        <p style="margin-top:15px;color:gray;">
+        <p style="margin-top:15px;color:#9ca3af;">
             Админ:
             <b>admin</b> /
             <b>admin</b>
@@ -200,7 +348,7 @@ button:hover{
 
     </div>
 
-    <!-- ОСНОВНОЙ САЙТ -->
+    <!-- APP -->
     <div id="app" class="hidden">
 
         <div class="topbar">
@@ -211,16 +359,20 @@ button:hover{
                 (<span class="role" id="currentRole"></span>)
             </div>
 
-            <button class="logout" onclick="logout()">Выйти</button>
+            <button class="logout" onclick="logout()">
+                Выйти
+            </button>
 
         </div>
 
-        <!-- ПАНЕЛЬ ЗАКАЗЧИКА -->
+        <!-- CUSTOMER PANEL -->
         <div class="card hidden" id="customerPanel">
 
             <h2>Создать заказ</h2>
 
-            <input type="text" id="orderTitle" placeholder="Название заказа">
+            <input type="text"
+                   id="orderTitle"
+                   placeholder="Название заказа">
 
             <select id="orderCategory">
                 <option>Для дома</option>
@@ -229,19 +381,29 @@ button:hover{
                 <option>Другое</option>
             </select>
 
-            <textarea id="orderDescription" placeholder="Описание"></textarea>
+            <textarea id="orderDescription"
+                      placeholder="Описание заказа"></textarea>
 
-            <input type="number" id="orderPrice" placeholder="Цена">
+            <input type="number"
+                   id="orderPrice"
+                   placeholder="Цена">
 
-            <input type="text" id="orderPlace" placeholder="Место">
+            <input type="text"
+                   id="orderPlace"
+                   placeholder="Место">
 
-            <input type="text" id="orderContact" placeholder="Контактная информация">
+            <input type="text"
+                   id="orderContact"
+                   placeholder="Контактная информация">
 
-            <button onclick="createOrder()">Добавить заказ</button>
+            <button class="loginBtn"
+                    onclick="createOrder()">
+                Добавить заказ
+            </button>
 
         </div>
 
-        <!-- СПИСОК ЗАКАЗОВ -->
+        <!-- ORDERS -->
         <div class="card">
 
             <h2>Все заказы</h2>
@@ -256,11 +418,16 @@ button:hover{
 
 <script>
 
-let users = JSON.parse(localStorage.getItem("users")) || [];
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+let users =
+    JSON.parse(localStorage.getItem("users")) || [];
 
-// СОЗДАЕМ АДМИНА
+let orders =
+    JSON.parse(localStorage.getItem("orders")) || [];
+
+let currentUser =
+    JSON.parse(localStorage.getItem("currentUser")) || null;
+
+/* ADMIN */
 if(!users.find(u => u.username === "admin")){
 
     users.push({
@@ -272,7 +439,7 @@ if(!users.find(u => u.username === "admin")){
     saveUsers();
 }
 
-// СОХРАНЕНИЕ
+/* SAVE */
 function saveUsers(){
     localStorage.setItem("users", JSON.stringify(users));
 }
@@ -282,23 +449,29 @@ function saveOrders(){
 }
 
 function saveCurrentUser(){
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    localStorage.setItem(
+        "currentUser",
+        JSON.stringify(currentUser)
+    );
 }
 
-// РЕГИСТРАЦИЯ
+/* REGISTER */
 function register(){
 
     const username =
-        document.getElementById("username").value.trim();
+        document.getElementById("username")
+        .value.trim();
 
     const password =
-        document.getElementById("password").value.trim();
+        document.getElementById("password")
+        .value.trim();
 
     const role =
-        document.getElementById("role").value;
+        document.getElementById("role")
+        .value;
 
     if(!username || !password){
-        alert("Заполните поля");
+        alert("Заполните все поля");
         return;
     }
 
@@ -326,14 +499,16 @@ function register(){
     alert("Регистрация успешна");
 }
 
-// ВХОД
+/* LOGIN */
 function login(){
 
     const username =
-        document.getElementById("username").value.trim();
+        document.getElementById("username")
+        .value.trim();
 
     const password =
-        document.getElementById("password").value.trim();
+        document.getElementById("password")
+        .value.trim();
 
     const user =
         users.find(u =>
@@ -353,7 +528,7 @@ function login(){
     showApp();
 }
 
-// ВЫХОД
+/* LOGOUT */
 function logout(){
 
     currentUser = null;
@@ -367,7 +542,7 @@ function logout(){
         .classList.add("hidden");
 }
 
-// ПОКАЗ САЙТА
+/* SHOW APP */
 function showApp(){
 
     document.getElementById("authBlock")
@@ -396,13 +571,12 @@ function showApp(){
     document.getElementById("currentRole")
         .innerText = roleText;
 
-    // ПАНЕЛЬ СОЗДАНИЯ ЗАКАЗОВ
     if(currentUser.role === "customer"){
 
         document.getElementById("customerPanel")
             .classList.remove("hidden");
 
-    } else {
+    }else{
 
         document.getElementById("customerPanel")
             .classList.add("hidden");
@@ -411,7 +585,7 @@ function showApp(){
     renderOrders();
 }
 
-// СОЗДАТЬ ЗАКАЗ
+/* CREATE ORDER */
 function createOrder(){
 
     const title =
@@ -443,7 +617,6 @@ function createOrder(){
         return;
     }
 
-    // НОВЫЙ ЗАКАЗ
     orders.unshift({
 
         id:Date.now(),
@@ -460,7 +633,6 @@ function createOrder(){
         acceptedBy:null,
 
         published:false
-
     });
 
     saveOrders();
@@ -474,7 +646,7 @@ function createOrder(){
     document.getElementById("orderContact").value = "";
 }
 
-// ПРИНЯТЬ ЗАКАЗ
+/* ACCEPT */
 function acceptOrder(id){
 
     const order =
@@ -485,14 +657,15 @@ function acceptOrder(id){
         return;
     }
 
-    order.acceptedBy = currentUser.username;
+    order.acceptedBy =
+        currentUser.username;
 
     saveOrders();
 
     renderOrders();
 }
 
-// ОПУБЛИКОВАТЬ
+/* PUBLISH */
 function publishOrder(id){
 
     const order =
@@ -505,7 +678,7 @@ function publishOrder(id){
     renderOrders();
 }
 
-// УДАЛИТЬ
+/* DELETE */
 function deleteOrder(id){
 
     if(!confirm("Удалить заказ?")){
@@ -520,7 +693,7 @@ function deleteOrder(id){
     renderOrders();
 }
 
-// ОТОБРАЖЕНИЕ
+/* RENDER */
 function renderOrders(){
 
     const list =
@@ -528,17 +701,16 @@ function renderOrders(){
 
     list.innerHTML = "";
 
-    // ФИЛЬТР
     let visibleOrders = orders;
 
-    // Для исполнителей показываем только опубликованные
+    /* EXECUTOR */
     if(currentUser.role === "executor"){
 
         visibleOrders =
             orders.filter(o => o.published);
     }
 
-    // Для заказчиков показываем только свои
+    /* CUSTOMER */
     if(currentUser.role === "customer"){
 
         visibleOrders =
@@ -550,7 +722,7 @@ function renderOrders(){
     if(visibleOrders.length === 0){
 
         list.innerHTML =
-            "<p>Заказов пока нет</p>";
+            "<p style='color:#9ca3af;'>Заказов пока нет</p>";
 
         return;
     }
@@ -570,10 +742,14 @@ function renderOrders(){
 
             <h3>${order.title}</h3>
 
+            <br>
+
             <p>
-                <b>Описание:</b>
+                <b>Описание:</b><br>
                 ${order.description}
             </p>
+
+            <br>
 
             <p>
                 <b>Место:</b>
@@ -595,7 +771,7 @@ function renderOrders(){
             </div>
         `;
 
-        // НЕ ОПУБЛИКОВАН
+        /* NOT PUBLISHED */
         if(!order.published){
 
             div.innerHTML += `
@@ -605,7 +781,7 @@ function renderOrders(){
             `;
         }
 
-        // ПРИНЯТ
+        /* ACCEPTED */
         if(order.acceptedBy){
 
             div.innerHTML += `
@@ -616,7 +792,7 @@ function renderOrders(){
             `;
         }
 
-        // ИСПОЛНИТЕЛЬ
+        /* EXECUTOR */
         if(
             currentUser.role === "executor" &&
             order.published &&
@@ -626,7 +802,10 @@ function renderOrders(){
             const btn =
                 document.createElement("button");
 
-            btn.innerText = "Принять заказ";
+            btn.className = "loginBtn";
+
+            btn.innerText =
+                "Принять заказ";
 
             btn.onclick = () =>
                 acceptOrder(order.id);
@@ -634,7 +813,7 @@ function renderOrders(){
             div.appendChild(btn);
         }
 
-        // АДМИН
+        /* ADMIN */
         if(currentUser.role === "admin"){
 
             const panel =
@@ -642,13 +821,13 @@ function renderOrders(){
 
             panel.className = "adminPanel";
 
-            // КНОПКА ПУБЛИКАЦИИ
             if(!order.published){
 
                 const publishBtn =
                     document.createElement("button");
 
-                publishBtn.className = "publishBtn";
+                publishBtn.className =
+                    "publishBtn";
 
                 publishBtn.innerText =
                     "Опубликовать";
@@ -659,13 +838,14 @@ function renderOrders(){
                 panel.appendChild(publishBtn);
             }
 
-            // КНОПКА УДАЛЕНИЯ
             const deleteBtn =
                 document.createElement("button");
 
-            deleteBtn.className = "deleteBtn";
+            deleteBtn.className =
+                "deleteBtn";
 
-            deleteBtn.innerText = "Удалить";
+            deleteBtn.innerText =
+                "Удалить";
 
             deleteBtn.onclick = () =>
                 deleteOrder(order.id);
@@ -679,7 +859,7 @@ function renderOrders(){
     });
 }
 
-// АВТОВХОД
+/* AUTO LOGIN */
 if(currentUser){
     showApp();
 }
