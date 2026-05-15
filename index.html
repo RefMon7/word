@@ -857,7 +857,10 @@ function renderExecutors(){
     list.innerHTML = "";
 
     let executors =
-        users.filter(u => u.role === "executor");
+    users.filter(u =>
+        u.role === "executor" &&
+        u.subscription === true
+    );
 
     const category =
         document.getElementById("executorFilter").value;
