@@ -33,7 +33,6 @@ body::before{
     z-index:-2;
 }
 
-/* GLASS */
 body::after{
     content:"";
     position:fixed;
@@ -50,7 +49,7 @@ header{
 }
 
 .container{
-    max-width:1100px;
+    max-width:1200px;
     margin:auto;
     padding:20px;
 }
@@ -102,11 +101,17 @@ select{
     font-size:15px;
 }
 
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
 input::placeholder,
 textarea::placeholder{
     color:#9ca3af;
 }
 
+/* BUTTON */
 button{
     border:none;
     cursor:pointer;
@@ -123,7 +128,6 @@ button{
     transition:0.25s;
 }
 
-/* BUTTONS */
 .loginBtn{
     background:white;
     color:black;
@@ -178,6 +182,10 @@ button{
 
 .logout:hover{
     background:#3b3b42;
+}
+
+.hidden{
+    display:none;
 }
 
 /* TOPBAR */
@@ -252,6 +260,30 @@ button{
     border-radius:16px;
 }
 
+/* PROFILE */
+.profileCard{
+    margin-top:18px;
+
+    padding:20px;
+
+    border-radius:24px;
+
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.profileName{
+    font-size:22px;
+    font-weight:700;
+}
+
+.profileInfo{
+    margin-top:10px;
+    color:#d1d5db;
+    line-height:1.6;
+}
+
 .subscriptionBox{
     margin-top:15px;
 
@@ -264,24 +296,10 @@ button{
     border:1px solid rgba(255,255,255,0.08);
 }
 
-.subscriptionActive{
-    color:#86efac;
-    margin-top:10px;
-}
-
-.hidden{
-    display:none;
-}
-
 .adminPanel{
     display:flex;
     gap:10px;
     margin-top:15px;
-}
-
-/* FILTER */
-.filterBox{
-    margin-bottom:20px;
 }
 
 @media(max-width:700px){
@@ -360,7 +378,7 @@ button{
 
         </div>
 
-        <!-- SUBSCRIPTION -->
+        <!-- EXECUTOR SUB -->
         <div class="card hidden"
              id="subscriptionPanel">
 
@@ -390,7 +408,37 @@ button{
 
         </div>
 
-        <!-- CUSTOMER -->
+        <!-- EXECUTOR PROFILE -->
+        <div class="card hidden"
+             id="executorProfilePanel">
+
+            <h2>
+                Профиль исполнителя
+            </h2>
+
+            <input type="text"
+                   id="executorName"
+                   placeholder="Ваше имя">
+
+            <input type="text"
+                   id="executorPhone"
+                   placeholder="Номер телефона">
+
+            <input type="text"
+                   id="executorLocation"
+                   placeholder="Место нахождения">
+
+            <textarea id="executorDescription"
+                      placeholder="Информация о себе"></textarea>
+
+            <button class="loginBtn"
+                    onclick="saveExecutorProfile()">
+                Сохранить профиль
+            </button>
+
+        </div>
+
+        <!-- CUSTOMER CREATE -->
         <div class="card hidden"
              id="customerPanel">
 
@@ -429,47 +477,59 @@ button{
 
         </div>
 
+        <!-- EXECUTORS -->
+        <div class="card hidden"
+             id="executorsPanel">
+
+            <h2>
+                Исполнители
+            </h2>
+
+            <div id="executorsList"></div>
+
+        </div>
+
         <!-- FILTER -->
         <div class="card hidden"
              id="filterPanel">
 
-            <h2>Категории заказов</h2>
+            <h2>
+                Категории заказов
+            </h2>
 
-            <div class="filterBox">
+            <select id="categoryFilter"
+                    onchange="renderOrders()">
 
-                <select id="categoryFilter"
-                        onchange="renderOrders()">
+                <option value="all">
+                    Все категории
+                </option>
 
-                    <option value="all">
-                        Все категории
-                    </option>
+                <option value="Для дома">
+                    Для дома
+                </option>
 
-                    <option value="Для дома">
-                        Для дома
-                    </option>
+                <option value="Доставка">
+                    Доставка
+                </option>
 
-                    <option value="Доставка">
-                        Доставка
-                    </option>
+                <option value="Работы">
+                    Работы
+                </option>
 
-                    <option value="Работы">
-                        Работы
-                    </option>
+                <option value="Другое">
+                    Другое
+                </option>
 
-                    <option value="Другое">
-                        Другое
-                    </option>
-
-                </select>
-
-            </div>
+            </select>
 
         </div>
 
         <!-- ORDERS -->
         <div class="card">
 
-            <h2>Все заказы</h2>
+            <h2>
+                Все заказы
+            </h2>
 
             <div id="ordersList"></div>
 
@@ -563,7 +623,14 @@ function register(){
         password,
         role,
 
-        subscription:false
+        subscription:false,
+
+        profile:{
+            name:"",
+            phone:"",
+            location:"",
+            description:""
+        }
     });
 
     saveUsers();
@@ -649,9 +716,17 @@ function showApp(){
         document.getElementById("customerPanel")
             .classList.remove("hidden");
 
+        document.getElementById("executorsPanel")
+            .classList.remove("hidden");
+
+        renderExecutors();
+
     }else{
 
         document.getElementById("customerPanel")
+            .classList.add("hidden");
+
+        document.getElementById("executorsPanel")
             .classList.add("hidden");
     }
 
@@ -661,14 +736,22 @@ function showApp(){
         document.getElementById("subscriptionPanel")
             .classList.remove("hidden");
 
+        document.getElementById("executorProfilePanel")
+            .classList.remove("hidden");
+
         document.getElementById("filterPanel")
             .classList.remove("hidden");
 
         updateSubscriptionStatus();
 
+        loadExecutorProfile();
+
     }else{
 
         document.getElementById("subscriptionPanel")
+            .classList.add("hidden");
+
+        document.getElementById("executorProfilePanel")
             .classList.add("hidden");
 
         document.getElementById("filterPanel")
@@ -678,7 +761,114 @@ function showApp(){
     renderOrders();
 }
 
-/* SUB STATUS */
+/* SAVE PROFILE */
+function saveExecutorProfile(){
+
+    currentUser.profile = {
+
+        name:
+            document.getElementById("executorName").value,
+
+        phone:
+            document.getElementById("executorPhone").value,
+
+        location:
+            document.getElementById("executorLocation").value,
+
+        description:
+            document.getElementById("executorDescription").value
+    };
+
+    users = users.map(u => {
+
+        if(u.username === currentUser.username){
+
+            u.profile = currentUser.profile;
+        }
+
+        return u;
+    });
+
+    saveUsers();
+
+    saveCurrentUser();
+
+    alert("Профиль сохранен");
+}
+
+/* LOAD PROFILE */
+function loadExecutorProfile(){
+
+    if(!currentUser.profile){
+        return;
+    }
+
+    document.getElementById("executorName").value =
+        currentUser.profile.name || "";
+
+    document.getElementById("executorPhone").value =
+        currentUser.profile.phone || "";
+
+    document.getElementById("executorLocation").value =
+        currentUser.profile.location || "";
+
+    document.getElementById("executorDescription").value =
+        currentUser.profile.description || "";
+}
+
+/* RENDER EXECUTORS */
+function renderExecutors(){
+
+    const list =
+        document.getElementById("executorsList");
+
+    list.innerHTML = "";
+
+    const executors =
+        users.filter(u => u.role === "executor");
+
+    if(executors.length === 0){
+
+        list.innerHTML =
+            "<p style='color:#9ca3af;'>Исполнителей пока нет</p>";
+
+        return;
+    }
+
+    executors.forEach(executor => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "profileCard";
+
+        div.innerHTML = `
+
+            <div class="profileName">
+                ${executor.profile?.name || executor.username}
+            </div>
+
+            <div class="profileInfo">
+
+                📍 ${executor.profile?.location || "Не указано"}
+
+                <br>
+
+                📞 ${executor.profile?.phone || "Не указано"}
+
+                <br><br>
+
+                ${executor.profile?.description || "Нет информации"}
+
+            </div>
+
+        `;
+
+        list.appendChild(div);
+    });
+}
+
+/* SUB */
 function updateSubscriptionStatus(){
 
     const status =
@@ -687,7 +877,7 @@ function updateSubscriptionStatus(){
     if(currentUser.subscription){
 
         status.innerHTML = `
-            <div class="subscriptionActive">
+            <div style="color:#86efac;margin-top:10px;">
                 Подписка активна ✔
             </div>
         `;
@@ -702,10 +892,8 @@ function updateSubscriptionStatus(){
     }
 }
 
-/* BUY SUB */
+/* BUY */
 function buySubscription(){
-
-    alert("Тестовая подписка активирована");
 
     currentUser.subscription = true;
 
@@ -726,6 +914,8 @@ function buySubscription(){
     updateSubscriptionStatus();
 
     renderOrders();
+
+    alert("Подписка активирована");
 }
 
 /* CREATE ORDER */
@@ -756,7 +946,7 @@ function createOrder(){
         !place ||
         !contact
     ){
-        alert("Заполните все поля");
+        alert("Заполните поля");
         return;
     }
 
@@ -794,9 +984,7 @@ function acceptOrder(id){
 
     if(!currentUser.subscription){
 
-        alert(
-            "Нужна подписка 15€/месяц"
-        );
+        alert("Нужна подписка 15€/месяц");
 
         return;
     }
@@ -833,10 +1021,6 @@ function publishOrder(id){
 /* DELETE */
 function deleteOrder(id){
 
-    if(!confirm("Удалить заказ?")){
-        return;
-    }
-
     orders =
         orders.filter(o => o.id !== id);
 
@@ -845,7 +1029,7 @@ function deleteOrder(id){
     renderOrders();
 }
 
-/* RENDER */
+/* RENDER ORDERS */
 function renderOrders(){
 
     const list =
@@ -862,8 +1046,7 @@ function renderOrders(){
 
             list.innerHTML = `
                 <div class="notPublished">
-                    Для просмотра заказов
-                    нужна подписка 15€/месяц
+                    Для просмотра заказов нужна подписка
                 </div>
             `;
 
@@ -873,15 +1056,14 @@ function renderOrders(){
         visibleOrders =
             orders.filter(o => o.published);
 
-        /* FILTER CATEGORY */
-        const selectedCategory =
+        const category =
             document.getElementById("categoryFilter").value;
 
-        if(selectedCategory !== "all"){
+        if(category !== "all"){
 
             visibleOrders =
                 visibleOrders.filter(o =>
-                    o.category === selectedCategory
+                    o.category === category
                 );
         }
     }
@@ -897,11 +1079,8 @@ function renderOrders(){
 
     if(visibleOrders.length === 0){
 
-        list.innerHTML = `
-            <p style="color:#9ca3af;">
-                Заказов пока нет
-            </p>
-        `;
+        list.innerHTML =
+            "<p style='color:#9ca3af;'>Заказов нет</p>";
 
         return;
     }
@@ -948,9 +1127,9 @@ function renderOrders(){
             <div class="price">
                 ${order.price} €
             </div>
+
         `;
 
-        /* NOT PUBLISHED */
         if(!order.published){
 
             div.innerHTML += `
@@ -960,7 +1139,6 @@ function renderOrders(){
             `;
         }
 
-        /* ACCEPTED */
         if(order.acceptedBy){
 
             div.innerHTML += `
@@ -971,7 +1149,7 @@ function renderOrders(){
             `;
         }
 
-        /* EXECUTOR BUTTON */
+        /* EXECUTOR BTN */
         if(
             currentUser.role === "executor" &&
             order.published &&
