@@ -21,7 +21,6 @@ body{
     overflow-x:hidden;
 }
 
-/* BACKGROUND */
 body::before{
     content:"";
     position:fixed;
@@ -44,7 +43,7 @@ body::after{
 header{
     text-align:center;
     padding:35px 20px;
-    font-size:32px;
+    font-size:34px;
     font-weight:700;
 }
 
@@ -57,17 +56,11 @@ header{
 /* CARD */
 .card{
     background:rgba(255,255,255,0.06);
-
     border:1px solid rgba(255,255,255,0.08);
-
     backdrop-filter:blur(25px);
-
     border-radius:30px;
-
     padding:24px;
-
     margin-bottom:25px;
-
     box-shadow:
         0 10px 40px rgba(0,0,0,0.45),
         inset 0 1px 1px rgba(255,255,255,0.08);
@@ -78,26 +71,19 @@ h2{
     font-size:24px;
 }
 
+/* INPUT */
 input,
 textarea,
 select{
     width:100%;
-
     margin-top:12px;
-
     padding:16px 18px;
-
     border:none;
     outline:none;
-
     border-radius:20px;
-
     background:rgba(255,255,255,0.06);
-
     color:white;
-
     border:1px solid rgba(255,255,255,0.08);
-
     font-size:15px;
 }
 
@@ -115,16 +101,11 @@ textarea::placeholder{
 button{
     border:none;
     cursor:pointer;
-
     padding:15px 22px;
-
     border-radius:20px;
-
     font-size:15px;
     font-weight:600;
-
     margin-top:15px;
-
     transition:0.25s;
 }
 
@@ -184,10 +165,6 @@ button{
     background:#3b3b42;
 }
 
-.hidden{
-    display:none;
-}
-
 /* TOPBAR */
 .topbar{
     display:flex;
@@ -200,76 +177,57 @@ button{
     color:#d1d5db;
 }
 
+.hidden{
+    display:none;
+}
+
 /* ORDER */
 .order{
     margin-top:18px;
-
     padding:20px;
-
     border-radius:24px;
-
     background:rgba(255,255,255,0.04);
-
     border:1px solid rgba(255,255,255,0.06);
 }
 
 .badge{
     display:inline-block;
-
     padding:8px 14px;
-
     border-radius:999px;
-
     background:rgba(255,255,255,0.08);
-
     color:#d4d4d8;
-
     font-size:13px;
-
     margin-bottom:14px;
 }
 
 .price{
     margin-top:14px;
-
     font-size:26px;
     font-weight:700;
 }
 
 .accepted{
     margin-top:14px;
-
     background:rgba(34,197,94,0.12);
-
     color:#86efac;
-
     padding:12px;
-
     border-radius:16px;
 }
 
 .notPublished{
     margin-top:14px;
-
     background:rgba(234,179,8,0.12);
-
     color:#fde68a;
-
     padding:12px;
-
     border-radius:16px;
 }
 
 /* PROFILE */
 .profileCard{
     margin-top:18px;
-
     padding:20px;
-
     border-radius:24px;
-
     background:rgba(255,255,255,0.04);
-
     border:1px solid rgba(255,255,255,0.06);
 }
 
@@ -284,22 +242,18 @@ button{
     line-height:1.6;
 }
 
-.subscriptionBox{
-    margin-top:15px;
-
-    padding:18px;
-
-    border-radius:22px;
-
-    background:rgba(255,255,255,0.05);
-
-    border:1px solid rgba(255,255,255,0.08);
-}
-
 .adminPanel{
     display:flex;
     gap:10px;
     margin-top:15px;
+}
+
+.subscriptionBox{
+    margin-top:15px;
+    padding:18px;
+    border-radius:22px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
 }
 
 @media(max-width:700px){
@@ -378,7 +332,7 @@ button{
 
         </div>
 
-        <!-- EXECUTOR SUB -->
+        <!-- SUB -->
         <div class="card hidden"
              id="subscriptionPanel">
 
@@ -418,15 +372,36 @@ button{
 
             <input type="text"
                    id="executorName"
-                   placeholder="Ваше имя">
+                   placeholder="Имя">
 
             <input type="text"
                    id="executorPhone"
-                   placeholder="Номер телефона">
+                   placeholder="Телефон">
 
             <input type="text"
                    id="executorLocation"
-                   placeholder="Место нахождения">
+                   placeholder="Место">
+
+            <!-- CATEGORY -->
+            <select id="executorCategory">
+
+                <option>
+                    Для дома
+                </option>
+
+                <option>
+                    Доставка
+                </option>
+
+                <option>
+                    Работы
+                </option>
+
+                <option>
+                    Другое
+                </option>
+
+            </select>
 
             <textarea id="executorDescription"
                       placeholder="Информация о себе"></textarea>
@@ -438,21 +413,36 @@ button{
 
         </div>
 
-        <!-- CUSTOMER CREATE -->
+        <!-- CUSTOMER -->
         <div class="card hidden"
              id="customerPanel">
 
-            <h2>Создать заказ</h2>
+            <h2>
+                Создать заказ
+            </h2>
 
             <input type="text"
                    id="orderTitle"
                    placeholder="Название заказа">
 
             <select id="orderCategory">
-                <option>Для дома</option>
-                <option>Доставка</option>
-                <option>Работы</option>
-                <option>Другое</option>
+
+                <option>
+                    Для дома
+                </option>
+
+                <option>
+                    Доставка
+                </option>
+
+                <option>
+                    Работы
+                </option>
+
+                <option>
+                    Другое
+                </option>
+
             </select>
 
             <textarea id="orderDescription"
@@ -485,7 +475,39 @@ button{
                 Исполнители
             </h2>
 
-            <div id="executorsList"></div>
+            <!-- FILTER -->
+            <select id="executorFilter"
+                    onchange="renderExecutors()">
+
+                <option value="all">
+                    Все категории
+                </option>
+
+                <option value="Для дома">
+                    Для дома
+                </option>
+
+                <option value="Доставка">
+                    Доставка
+                </option>
+
+                <option value="Работы">
+                    Работы
+                </option>
+
+                <option value="Другое">
+                    Другое
+                </option>
+
+            </select>
+
+            <button class="loginBtn"
+                    onclick="toggleExecutors()">
+                Показать исполнителей
+            </button>
+
+            <div id="executorsList"
+                 class="hidden"></div>
 
         </div>
 
@@ -588,16 +610,13 @@ function saveCurrentUser(){
 function register(){
 
     const username =
-        document.getElementById("username")
-        .value.trim();
+        document.getElementById("username").value.trim();
 
     const password =
-        document.getElementById("password")
-        .value.trim();
+        document.getElementById("password").value.trim();
 
     const role =
-        document.getElementById("role")
-        .value;
+        document.getElementById("role").value;
 
     if(!username || !password){
         alert("Заполните поля");
@@ -629,6 +648,7 @@ function register(){
             name:"",
             phone:"",
             location:"",
+            category:"",
             description:""
         }
     });
@@ -642,12 +662,10 @@ function register(){
 function login(){
 
     const username =
-        document.getElementById("username")
-        .value.trim();
+        document.getElementById("username").value.trim();
 
     const password =
-        document.getElementById("password")
-        .value.trim();
+        document.getElementById("password").value.trim();
 
     const user =
         users.find(u =>
@@ -681,7 +699,7 @@ function logout(){
         .classList.add("hidden");
 }
 
-/* SHOW APP */
+/* SHOW */
 function showApp(){
 
     document.getElementById("authBlock")
@@ -718,8 +736,6 @@ function showApp(){
 
         document.getElementById("executorsPanel")
             .classList.remove("hidden");
-
-        renderExecutors();
 
     }else{
 
@@ -761,7 +777,7 @@ function showApp(){
     renderOrders();
 }
 
-/* SAVE PROFILE */
+/* PROFILE SAVE */
 function saveExecutorProfile(){
 
     currentUser.profile = {
@@ -774,6 +790,9 @@ function saveExecutorProfile(){
 
         location:
             document.getElementById("executorLocation").value,
+
+        category:
+            document.getElementById("executorCategory").value,
 
         description:
             document.getElementById("executorDescription").value
@@ -812,11 +831,24 @@ function loadExecutorProfile(){
     document.getElementById("executorLocation").value =
         currentUser.profile.location || "";
 
+    document.getElementById("executorCategory").value =
+        currentUser.profile.category || "Для дома";
+
     document.getElementById("executorDescription").value =
         currentUser.profile.description || "";
 }
 
-/* RENDER EXECUTORS */
+/* EXECUTORS */
+function toggleExecutors(){
+
+    const list =
+        document.getElementById("executorsList");
+
+    list.classList.toggle("hidden");
+
+    renderExecutors();
+}
+
 function renderExecutors(){
 
     const list =
@@ -824,13 +856,24 @@ function renderExecutors(){
 
     list.innerHTML = "";
 
-    const executors =
+    let executors =
         users.filter(u => u.role === "executor");
+
+    const category =
+        document.getElementById("executorFilter").value;
+
+    if(category !== "all"){
+
+        executors =
+            executors.filter(e =>
+                e.profile?.category === category
+            );
+    }
 
     if(executors.length === 0){
 
         list.innerHTML =
-            "<p style='color:#9ca3af;'>Исполнителей пока нет</p>";
+            "<p style='margin-top:15px;color:#9ca3af;'>Исполнителей нет</p>";
 
         return;
     }
@@ -843,6 +886,10 @@ function renderExecutors(){
         div.className = "profileCard";
 
         div.innerHTML = `
+
+            <div class="badge">
+                ${executor.profile?.category || "Без категории"}
+            </div>
 
             <div class="profileName">
                 ${executor.profile?.name || executor.username}
@@ -985,7 +1032,6 @@ function acceptOrder(id){
     if(!currentUser.subscription){
 
         alert("Нужна подписка 15€/месяц");
-
         return;
     }
 
@@ -1149,7 +1195,7 @@ function renderOrders(){
             `;
         }
 
-        /* EXECUTOR BTN */
+        /* EXECUTOR */
         if(
             currentUser.role === "executor" &&
             order.published &&
