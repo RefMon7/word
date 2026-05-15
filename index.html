@@ -7,7 +7,7 @@
 
 <style>
 
-/* ===== IOS LIQUID GLASS STYLE ===== */
+/* ===== IOS LIQUID GLASS ===== */
 
 *{
     margin:0;
@@ -23,7 +23,6 @@ body{
     overflow-x:hidden;
 }
 
-/* ФОН */
 body::before{
     content:"";
     position:fixed;
@@ -35,7 +34,6 @@ body::before{
     z-index:-2;
 }
 
-/* GLASS */
 body::after{
     content:"";
     position:fixed;
@@ -49,7 +47,6 @@ header{
     padding:35px 20px;
     font-size:32px;
     font-weight:700;
-    letter-spacing:-1px;
 }
 
 .container{
@@ -58,13 +55,12 @@ header{
     padding:20px;
 }
 
-/* CARD */
 .card{
     background:rgba(255,255,255,0.06);
+
     border:1px solid rgba(255,255,255,0.08);
 
     backdrop-filter:blur(25px);
-    -webkit-backdrop-filter:blur(25px);
 
     border-radius:30px;
 
@@ -80,14 +76,13 @@ header{
 h2{
     margin-bottom:18px;
     font-size:24px;
-    font-weight:600;
 }
 
-/* INPUTS */
 input,
 textarea,
 select{
     width:100%;
+
     margin-top:12px;
 
     padding:16px 18px;
@@ -101,26 +96,16 @@ select{
 
     color:white;
 
-    font-size:15px;
-
     border:1px solid rgba(255,255,255,0.08);
 
-    transition:0.2s;
+    font-size:15px;
 }
 
 input::placeholder,
 textarea::placeholder{
-    color:#a1a1aa;
+    color:#9ca3af;
 }
 
-input:focus,
-textarea:focus,
-select:focus{
-    border:1px solid rgba(255,255,255,0.2);
-    background:rgba(255,255,255,0.08);
-}
-
-/* BUTTONS */
 button{
     border:none;
     cursor:pointer;
@@ -132,9 +117,9 @@ button{
     font-size:15px;
     font-weight:600;
 
-    transition:0.25s;
-
     margin-top:15px;
+
+    transition:0.25s;
 }
 
 /* LOGIN */
@@ -144,7 +129,7 @@ button{
 }
 
 .loginBtn:hover{
-    background:#f2f2f2;
+    background:#ececec;
     transform:translateY(-2px);
 }
 
@@ -155,117 +140,18 @@ button{
 }
 
 .registerBtn:hover{
-    background:#3a3a42;
+    background:#3b3b42;
     transform:translateY(-2px);
 }
 
-/* LOGOUT */
-.logout{
-    background:#2b2b31;
+/* SUBSCRIBE */
+.subscribeBtn{
+    background:#14532d;
     color:white;
 }
 
-.logout:hover{
-    background:#3b3b45;
-}
-
-/* ORDER */
-.order{
-    margin-top:18px;
-
-    padding:20px;
-
-    border-radius:24px;
-
-    background:rgba(255,255,255,0.04);
-
-    border:1px solid rgba(255,255,255,0.06);
-
-    transition:0.25s;
-}
-
-.order:hover{
-    transform:translateY(-3px);
-    background:rgba(255,255,255,0.06);
-}
-
-/* CATEGORY */
-.badge{
-    display:inline-flex;
-    align-items:center;
-
-    padding:8px 14px;
-
-    border-radius:999px;
-
-    background:rgba(255,255,255,0.08);
-
-    color:#d4d4d8;
-
-    font-size:13px;
-
-    margin-bottom:14px;
-}
-
-/* PRICE */
-.price{
-    margin-top:14px;
-
-    font-size:26px;
-    font-weight:700;
-
-    color:white;
-}
-
-/* TOPBAR */
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin-bottom:20px;
-}
-
-/* ROLE */
-.role{
-    color:#d4d4d8;
-    font-weight:600;
-}
-
-/* STATUS */
-.accepted{
-    margin-top:14px;
-
-    background:rgba(34,197,94,0.12);
-
-    color:#86efac;
-
-    border:1px solid rgba(34,197,94,0.2);
-
-    padding:12px;
-
-    border-radius:16px;
-}
-
-.notPublished{
-    margin-top:14px;
-
-    background:rgba(234,179,8,0.12);
-
-    color:#fde68a;
-
-    border:1px solid rgba(234,179,8,0.2);
-
-    padding:12px;
-
-    border-radius:16px;
-}
-
-/* ADMIN */
-.adminPanel{
-    display:flex;
-    gap:10px;
-    margin-top:15px;
+.subscribeBtn:hover{
+    background:#166534;
 }
 
 /* DELETE */
@@ -280,17 +166,119 @@ button{
 
 /* PUBLISH */
 .publishBtn{
-    background:#14532d;
+    background:#1d4ed8;
     color:white;
 }
 
 .publishBtn:hover{
-    background:#166534;
+    background:#2563eb;
 }
 
-/* HIDDEN */
+.logout{
+    background:#2b2b31;
+    color:white;
+}
+
+.logout:hover{
+    background:#3b3b42;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.role{
+    color:#d1d5db;
+}
+
 .hidden{
     display:none;
+}
+
+/* ORDER */
+.order{
+    margin-top:18px;
+
+    padding:20px;
+
+    border-radius:24px;
+
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.badge{
+    display:inline-block;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,0.08);
+
+    color:#d4d4d8;
+
+    font-size:13px;
+
+    margin-bottom:14px;
+}
+
+.price{
+    margin-top:14px;
+
+    font-size:26px;
+    font-weight:700;
+}
+
+.accepted{
+    margin-top:14px;
+
+    background:rgba(34,197,94,0.12);
+
+    color:#86efac;
+
+    padding:12px;
+
+    border-radius:16px;
+}
+
+.notPublished{
+    margin-top:14px;
+
+    background:rgba(234,179,8,0.12);
+
+    color:#fde68a;
+
+    padding:12px;
+
+    border-radius:16px;
+}
+
+.subscriptionBox{
+    margin-top:15px;
+
+    padding:18px;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.subscriptionActive{
+    color:#86efac;
+    margin-top:10px;
+}
+
+.adminPanel{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
 }
 
 @media(max-width:700px){
@@ -299,10 +287,6 @@ button{
         flex-direction:column;
         align-items:flex-start;
         gap:15px;
-    }
-
-    header{
-        font-size:26px;
     }
 
 }
@@ -323,20 +307,26 @@ button{
 
         <h2>Вход / Регистрация</h2>
 
-        <input type="text" id="username" placeholder="Логин">
+        <input type="text"
+               id="username"
+               placeholder="Логин">
 
-        <input type="password" id="password" placeholder="Пароль">
+        <input type="password"
+               id="password"
+               placeholder="Пароль">
 
         <select id="role">
             <option value="customer">Заказчик</option>
             <option value="executor">Исполнитель</option>
         </select>
 
-        <button class="registerBtn" onclick="register()">
+        <button class="registerBtn"
+                onclick="register()">
             Регистрация
         </button>
 
-        <button class="loginBtn" onclick="login()">
+        <button class="loginBtn"
+                onclick="login()">
             Войти
         </button>
 
@@ -356,17 +346,50 @@ button{
             <div>
                 Вы вошли как:
                 <span id="currentUser"></span>
-                (<span class="role" id="currentRole"></span>)
+                (<span class="role"
+                       id="currentRole"></span>)
             </div>
 
-            <button class="logout" onclick="logout()">
+            <button class="logout"
+                    onclick="logout()">
                 Выйти
             </button>
 
         </div>
 
-        <!-- CUSTOMER PANEL -->
-        <div class="card hidden" id="customerPanel">
+        <!-- SUBSCRIPTION -->
+        <div class="card hidden"
+             id="subscriptionPanel">
+
+            <h2>
+                Подписка исполнителя
+            </h2>
+
+            <div class="subscriptionBox">
+
+                <h3>
+                    Premium Executor
+                </h3>
+
+                <p style="margin-top:10px;color:#d1d5db;">
+                    Получите доступ ко всем заказам
+                    за 15€ в месяц.
+                </p>
+
+                <button class="subscribeBtn"
+                        onclick="buySubscription()">
+                    Купить за 15€
+                </button>
+
+                <div id="subscriptionStatus"></div>
+
+            </div>
+
+        </div>
+
+        <!-- CUSTOMER -->
+        <div class="card hidden"
+             id="customerPanel">
 
             <h2>Создать заказ</h2>
 
@@ -382,7 +405,7 @@ button{
             </select>
 
             <textarea id="orderDescription"
-                      placeholder="Описание заказа"></textarea>
+                      placeholder="Описание"></textarea>
 
             <input type="number"
                    id="orderPrice"
@@ -441,11 +464,17 @@ if(!users.find(u => u.username === "admin")){
 
 /* SAVE */
 function saveUsers(){
-    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem(
+        "users",
+        JSON.stringify(users)
+    );
 }
 
 function saveOrders(){
-    localStorage.setItem("orders", JSON.stringify(orders));
+    localStorage.setItem(
+        "orders",
+        JSON.stringify(orders)
+    );
 }
 
 function saveCurrentUser(){
@@ -489,9 +518,13 @@ function register(){
     }
 
     users.push({
+
         username,
         password,
-        role
+        role,
+
+        subscription:false,
+        subscriptionDate:null
     });
 
     saveUsers();
@@ -571,6 +604,7 @@ function showApp(){
     document.getElementById("currentRole")
         .innerText = roleText;
 
+    /* CUSTOMER PANEL */
     if(currentUser.role === "customer"){
 
         document.getElementById("customerPanel")
@@ -582,6 +616,79 @@ function showApp(){
             .classList.add("hidden");
     }
 
+    /* SUB PANEL */
+    if(currentUser.role === "executor"){
+
+        document.getElementById("subscriptionPanel")
+            .classList.remove("hidden");
+
+        updateSubscriptionStatus();
+
+    }else{
+
+        document.getElementById("subscriptionPanel")
+            .classList.add("hidden");
+    }
+
+    renderOrders();
+}
+
+/* SUB STATUS */
+function updateSubscriptionStatus(){
+
+    const status =
+        document.getElementById("subscriptionStatus");
+
+    if(currentUser.subscription){
+
+        status.innerHTML = `
+            <div class="subscriptionActive">
+                Подписка активна ✔
+            </div>
+        `;
+
+    }else{
+
+        status.innerHTML = `
+            <div style="color:#fca5a5;margin-top:10px;">
+                Подписка не активна
+            </div>
+        `;
+    }
+}
+
+/* BUY SUB */
+function buySubscription(){
+
+    alert(
+        "Тестовая подписка успешно оформлена!"
+    );
+
+    currentUser.subscription = true;
+
+    currentUser.subscriptionDate =
+        new Date().toISOString();
+
+    /* UPDATE USER */
+    users = users.map(u => {
+
+        if(u.username === currentUser.username){
+
+            u.subscription = true;
+
+            u.subscriptionDate =
+                currentUser.subscriptionDate;
+        }
+
+        return u;
+    });
+
+    saveUsers();
+
+    saveCurrentUser();
+
+    updateSubscriptionStatus();
+
     renderOrders();
 }
 
@@ -589,22 +696,28 @@ function showApp(){
 function createOrder(){
 
     const title =
-        document.getElementById("orderTitle").value;
+        document.getElementById("orderTitle")
+        .value;
 
     const category =
-        document.getElementById("orderCategory").value;
+        document.getElementById("orderCategory")
+        .value;
 
     const description =
-        document.getElementById("orderDescription").value;
+        document.getElementById("orderDescription")
+        .value;
 
     const price =
-        document.getElementById("orderPrice").value;
+        document.getElementById("orderPrice")
+        .value;
 
     const place =
-        document.getElementById("orderPlace").value;
+        document.getElementById("orderPlace")
+        .value;
 
     const contact =
-        document.getElementById("orderContact").value;
+        document.getElementById("orderContact")
+        .value;
 
     if(
         !title ||
@@ -639,15 +752,24 @@ function createOrder(){
 
     renderOrders();
 
-    document.getElementById("orderTitle").value = "";
-    document.getElementById("orderDescription").value = "";
-    document.getElementById("orderPrice").value = "";
-    document.getElementById("orderPlace").value = "";
-    document.getElementById("orderContact").value = "";
+    document.getElementById("orderTitle").value="";
+    document.getElementById("orderDescription").value="";
+    document.getElementById("orderPrice").value="";
+    document.getElementById("orderPlace").value="";
+    document.getElementById("orderContact").value="";
 }
 
 /* ACCEPT */
 function acceptOrder(id){
+
+    if(!currentUser.subscription){
+
+        alert(
+            "Для доступа к заказам нужна подписка 15€/месяц"
+        );
+
+        return;
+    }
 
     const order =
         orders.find(o => o.id === id);
@@ -706,6 +828,18 @@ function renderOrders(){
     /* EXECUTOR */
     if(currentUser.role === "executor"){
 
+        if(!currentUser.subscription){
+
+            list.innerHTML = `
+                <div class="notPublished">
+                    Для просмотра заказов
+                    нужна подписка 15€/месяц
+                </div>
+            `;
+
+            return;
+        }
+
         visibleOrders =
             orders.filter(o => o.published);
     }
@@ -721,8 +855,11 @@ function renderOrders(){
 
     if(visibleOrders.length === 0){
 
-        list.innerHTML =
-            "<p style='color:#9ca3af;'>Заказов пока нет</p>";
+        list.innerHTML = `
+            <p style="color:#9ca3af;">
+                Заказов пока нет
+            </p>
+        `;
 
         return;
     }
@@ -792,7 +929,7 @@ function renderOrders(){
             `;
         }
 
-        /* EXECUTOR */
+        /* EXECUTOR BUTTON */
         if(
             currentUser.role === "executor" &&
             order.published &&
