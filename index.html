@@ -1,139 +1,171 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Биржа Заказов</title>
 
 <style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-        font-family:Arial, sans-serif;
-    }
 
-    body{
-        background:#f3f4f6;
-        color:#222;
-    }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
 
-    header{
-        background:#2563eb;
-        color:white;
-        padding:20px;
-        text-align:center;
-        font-size:28px;
-        font-weight:bold;
-    }
+body{
+    background:#f3f4f6;
+    color:#222;
+}
 
-    .container{
-        max-width:1100px;
-        margin:30px auto;
-        padding:20px;
-    }
+header{
+    background:#2563eb;
+    color:white;
+    text-align:center;
+    padding:20px;
+    font-size:28px;
+    font-weight:bold;
+}
 
-    .card{
-        background:white;
-        border-radius:14px;
-        padding:20px;
-        box-shadow:0 4px 15px rgba(0,0,0,0.1);
-        margin-bottom:20px;
-    }
+.container{
+    max-width:1100px;
+    margin:30px auto;
+    padding:20px;
+}
 
-    h2{
-        margin-bottom:15px;
-        color:#2563eb;
-    }
+.card{
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
 
-    input, textarea, select{
-        width:100%;
-        padding:12px;
-        margin-top:10px;
-        border:1px solid #ccc;
-        border-radius:10px;
-        font-size:15px;
-    }
+h2{
+    margin-bottom:15px;
+    color:#2563eb;
+}
 
-    textarea{
-        resize:vertical;
-        min-height:100px;
-    }
+input, textarea, select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    margin-top:10px;
+    font-size:15px;
+}
 
-    button{
-        background:#2563eb;
-        color:white;
-        border:none;
-        padding:12px 18px;
-        border-radius:10px;
-        cursor:pointer;
-        margin-top:15px;
-        font-size:15px;
-        transition:0.2s;
-    }
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
 
-    button:hover{
-        background:#1d4ed8;
-    }
+button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-top:15px;
+    transition:0.2s;
+    font-size:15px;
+}
 
-    .hidden{
-        display:none;
-    }
+button:hover{
+    background:#1d4ed8;
+}
 
-    .topbar{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin-bottom:20px;
-    }
+.logout{
+    background:#ef4444;
+}
 
-    .order{
-        border:1px solid #ddd;
-        padding:15px;
-        border-radius:12px;
-        margin-top:15px;
-    }
+.logout:hover{
+    background:#dc2626;
+}
 
-    .badge{
-        display:inline-block;
-        padding:6px 12px;
-        border-radius:20px;
-        background:#dbeafe;
-        color:#1e40af;
-        font-size:13px;
-        margin-bottom:10px;
-    }
+.deleteBtn{
+    background:#dc2626;
+}
 
-    .price{
-        font-size:22px;
-        color:green;
-        font-weight:bold;
-        margin-top:10px;
-    }
+.deleteBtn:hover{
+    background:#b91c1c;
+}
 
-    .accepted{
-        background:#dcfce7;
-        color:#166534;
-        padding:8px;
-        border-radius:8px;
-        margin-top:10px;
-    }
+.publishBtn{
+    background:#16a34a;
+}
 
-    .role{
-        font-weight:bold;
-        color:#2563eb;
-    }
+.publishBtn:hover{
+    background:#15803d;
+}
 
-    .logout{
-        background:#ef4444;
-    }
+.hidden{
+    display:none;
+}
 
-    .logout:hover{
-        background:#dc2626;
-    }
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.role{
+    font-weight:bold;
+    color:#2563eb;
+}
+
+.order{
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:15px;
+    margin-top:15px;
+}
+
+.badge{
+    display:inline-block;
+    background:#dbeafe;
+    color:#1e40af;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.price{
+    color:green;
+    font-size:22px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.accepted{
+    background:#dcfce7;
+    color:#166534;
+    padding:8px;
+    border-radius:8px;
+    margin-top:10px;
+}
+
+.notPublished{
+    background:#fef3c7;
+    color:#92400e;
+    padding:8px;
+    border-radius:8px;
+    margin-top:10px;
+}
+
+.adminPanel{
+    margin-top:15px;
+    display:flex;
+    gap:10px;
+}
 
 </style>
 </head>
+
 <body>
 
 <header>
@@ -143,10 +175,12 @@
 <div class="container">
 
     <!-- АВТОРИЗАЦИЯ -->
-    <div id="authBlock" class="card">
+    <div class="card" id="authBlock">
+
         <h2>Вход / Регистрация</h2>
 
         <input type="text" id="username" placeholder="Логин">
+
         <input type="password" id="password" placeholder="Пароль">
 
         <select id="role">
@@ -155,13 +189,22 @@
         </select>
 
         <button onclick="register()">Регистрация</button>
+
         <button onclick="login()">Вход</button>
+
+        <p style="margin-top:15px;color:gray;">
+            Админ:
+            <b>admin</b> /
+            <b>admin</b>
+        </p>
+
     </div>
 
     <!-- ОСНОВНОЙ САЙТ -->
     <div id="app" class="hidden">
 
         <div class="topbar">
+
             <div>
                 Вы вошли как:
                 <span id="currentUser"></span>
@@ -169,10 +212,12 @@
             </div>
 
             <button class="logout" onclick="logout()">Выйти</button>
+
         </div>
 
-        <!-- ФОРМА СОЗДАНИЯ ЗАКАЗА -->
-        <div id="customerPanel" class="card hidden">
+        <!-- ПАНЕЛЬ ЗАКАЗЧИКА -->
+        <div class="card hidden" id="customerPanel">
+
             <h2>Создать заказ</h2>
 
             <input type="text" id="orderTitle" placeholder="Название заказа">
@@ -184,7 +229,7 @@
                 <option>Другое</option>
             </select>
 
-            <textarea id="orderDescription" placeholder="Описание заказа"></textarea>
+            <textarea id="orderDescription" placeholder="Описание"></textarea>
 
             <input type="number" id="orderPrice" placeholder="Цена">
 
@@ -193,13 +238,16 @@
             <input type="text" id="orderContact" placeholder="Контактная информация">
 
             <button onclick="createOrder()">Добавить заказ</button>
+
         </div>
 
         <!-- СПИСОК ЗАКАЗОВ -->
         <div class="card">
+
             <h2>Все заказы</h2>
 
             <div id="ordersList"></div>
+
         </div>
 
     </div>
@@ -208,225 +256,433 @@
 
 <script>
 
-    // ЛОКАЛЬНАЯ БАЗА
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    let orders = JSON.parse(localStorage.getItem("orders")) || [];
-    let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+let users = JSON.parse(localStorage.getItem("users")) || [];
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
 
-    // СОХРАНЕНИЕ
-    function saveUsers(){
-        localStorage.setItem("users", JSON.stringify(users));
+// СОЗДАЕМ АДМИНА
+if(!users.find(u => u.username === "admin")){
+
+    users.push({
+        username:"admin",
+        password:"admin",
+        role:"admin"
+    });
+
+    saveUsers();
+}
+
+// СОХРАНЕНИЕ
+function saveUsers(){
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+function saveOrders(){
+    localStorage.setItem("orders", JSON.stringify(orders));
+}
+
+function saveCurrentUser(){
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+}
+
+// РЕГИСТРАЦИЯ
+function register(){
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value.trim();
+
+    const role =
+        document.getElementById("role").value;
+
+    if(!username || !password){
+        alert("Заполните поля");
+        return;
     }
 
-    function saveOrders(){
-        localStorage.setItem("orders", JSON.stringify(orders));
+    if(username === "admin"){
+        alert("Этот логин запрещен");
+        return;
     }
 
-    function saveCurrentUser(){
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    const exists =
+        users.find(u => u.username === username);
+
+    if(exists){
+        alert("Пользователь уже существует");
+        return;
     }
 
-    // РЕГИСТРАЦИЯ
-    function register(){
+    users.push({
+        username,
+        password,
+        role
+    });
 
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
-        const role = document.getElementById("role").value;
+    saveUsers();
 
-        if(!username || !password){
-            alert("Заполните все поля");
-            return;
-        }
+    alert("Регистрация успешна");
+}
 
-        const exists = users.find(u => u.username === username);
+// ВХОД
+function login(){
 
-        if(exists){
-            alert("Пользователь уже существует");
-            return;
-        }
+    const username =
+        document.getElementById("username").value.trim();
 
-        users.push({
-            username,
-            password,
-            role
-        });
+    const password =
+        document.getElementById("password").value.trim();
 
-        saveUsers();
-
-        alert("Регистрация успешна!");
-    }
-
-    // ВХОД
-    function login(){
-
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        const user = users.find(u =>
+    const user =
+        users.find(u =>
             u.username === username &&
             u.password === password
         );
 
-        if(!user){
-            alert("Неверный логин или пароль");
-            return;
-        }
-
-        currentUser = user;
-        saveCurrentUser();
-
-        showApp();
+    if(!user){
+        alert("Неверный логин или пароль");
+        return;
     }
 
-    // ВЫХОД
-    function logout(){
-        currentUser = null;
-        localStorage.removeItem("currentUser");
+    currentUser = user;
 
-        document.getElementById("authBlock").classList.remove("hidden");
-        document.getElementById("app").classList.add("hidden");
+    saveCurrentUser();
+
+    showApp();
+}
+
+// ВЫХОД
+function logout(){
+
+    currentUser = null;
+
+    localStorage.removeItem("currentUser");
+
+    document.getElementById("authBlock")
+        .classList.remove("hidden");
+
+    document.getElementById("app")
+        .classList.add("hidden");
+}
+
+// ПОКАЗ САЙТА
+function showApp(){
+
+    document.getElementById("authBlock")
+        .classList.add("hidden");
+
+    document.getElementById("app")
+        .classList.remove("hidden");
+
+    document.getElementById("currentUser")
+        .innerText = currentUser.username;
+
+    let roleText = "";
+
+    if(currentUser.role === "customer"){
+        roleText = "Заказчик";
     }
 
-    // ПОКАЗ САЙТА
-    function showApp(){
-
-        document.getElementById("authBlock").classList.add("hidden");
-        document.getElementById("app").classList.remove("hidden");
-
-        document.getElementById("currentUser").innerText = currentUser.username;
-        document.getElementById("currentRole").innerText =
-            currentUser.role === "customer"
-            ? "Заказчик"
-            : "Исполнитель";
-
-        // Показываем панель заказчика
-        if(currentUser.role === "customer"){
-            document.getElementById("customerPanel").classList.remove("hidden");
-        } else {
-            document.getElementById("customerPanel").classList.add("hidden");
-        }
-
-        renderOrders();
+    if(currentUser.role === "executor"){
+        roleText = "Исполнитель";
     }
 
-    // СОЗДАНИЕ ЗАКАЗА
-    function createOrder(){
-
-        const title = document.getElementById("orderTitle").value;
-        const category = document.getElementById("orderCategory").value;
-        const description = document.getElementById("orderDescription").value;
-        const price = document.getElementById("orderPrice").value;
-        const place = document.getElementById("orderPlace").value;
-        const contact = document.getElementById("orderContact").value;
-
-        if(!title || !description || !price || !place || !contact){
-            alert("Заполните все поля");
-            return;
-        }
-
-        orders.unshift({
-            id: Date.now(),
-            title,
-            category,
-            description,
-            price,
-            place,
-            contact,
-            customer: currentUser.username,
-            acceptedBy: null
-        });
-
-        saveOrders();
-
-        renderOrders();
-
-        document.getElementById("orderTitle").value = "";
-        document.getElementById("orderDescription").value = "";
-        document.getElementById("orderPrice").value = "";
-        document.getElementById("orderPlace").value = "";
-        document.getElementById("orderContact").value = "";
+    if(currentUser.role === "admin"){
+        roleText = "Администратор";
     }
 
-    // ПРИНЯТЬ ЗАКАЗ
-    function acceptOrder(id){
+    document.getElementById("currentRole")
+        .innerText = roleText;
 
-        const order = orders.find(o => o.id === id);
+    // ПАНЕЛЬ СОЗДАНИЯ ЗАКАЗОВ
+    if(currentUser.role === "customer"){
 
-        if(order.acceptedBy){
-            alert("Заказ уже принят");
-            return;
-        }
+        document.getElementById("customerPanel")
+            .classList.remove("hidden");
 
-        order.acceptedBy = currentUser.username;
+    } else {
 
-        saveOrders();
-
-        renderOrders();
+        document.getElementById("customerPanel")
+            .classList.add("hidden");
     }
 
-    // ОТОБРАЖЕНИЕ ЗАКАЗОВ
-    function renderOrders(){
+    renderOrders();
+}
 
-        const list = document.getElementById("ordersList");
+// СОЗДАТЬ ЗАКАЗ
+function createOrder(){
 
-        list.innerHTML = "";
+    const title =
+        document.getElementById("orderTitle").value;
 
-        if(orders.length === 0){
-            list.innerHTML = "<p>Пока заказов нет</p>";
-            return;
-        }
+    const category =
+        document.getElementById("orderCategory").value;
 
-        orders.forEach(order => {
+    const description =
+        document.getElementById("orderDescription").value;
 
-            const div = document.createElement("div");
-            div.className = "order";
+    const price =
+        document.getElementById("orderPrice").value;
 
-            div.innerHTML = `
-                <div class="badge">${order.category}</div>
+    const place =
+        document.getElementById("orderPlace").value;
 
-                <h3>${order.title}</h3>
+    const contact =
+        document.getElementById("orderContact").value;
 
-                <p><b>Описание:</b> ${order.description}</p>
+    if(
+        !title ||
+        !description ||
+        !price ||
+        !place ||
+        !contact
+    ){
+        alert("Заполните все поля");
+        return;
+    }
 
-                <p><b>Место:</b> ${order.place}</p>
+    // НОВЫЙ ЗАКАЗ
+    orders.unshift({
 
-                <p><b>Контакты:</b> ${order.contact}</p>
+        id:Date.now(),
 
-                <p><b>Заказчик:</b> ${order.customer}</p>
+        title,
+        category,
+        description,
+        price,
+        place,
+        contact,
 
-                <div class="price">${order.price} €</div>
+        customer:currentUser.username,
+
+        acceptedBy:null,
+
+        published:false
+
+    });
+
+    saveOrders();
+
+    renderOrders();
+
+    document.getElementById("orderTitle").value = "";
+    document.getElementById("orderDescription").value = "";
+    document.getElementById("orderPrice").value = "";
+    document.getElementById("orderPlace").value = "";
+    document.getElementById("orderContact").value = "";
+}
+
+// ПРИНЯТЬ ЗАКАЗ
+function acceptOrder(id){
+
+    const order =
+        orders.find(o => o.id === id);
+
+    if(order.acceptedBy){
+        alert("Заказ уже принят");
+        return;
+    }
+
+    order.acceptedBy = currentUser.username;
+
+    saveOrders();
+
+    renderOrders();
+}
+
+// ОПУБЛИКОВАТЬ
+function publishOrder(id){
+
+    const order =
+        orders.find(o => o.id === id);
+
+    order.published = true;
+
+    saveOrders();
+
+    renderOrders();
+}
+
+// УДАЛИТЬ
+function deleteOrder(id){
+
+    if(!confirm("Удалить заказ?")){
+        return;
+    }
+
+    orders =
+        orders.filter(o => o.id !== id);
+
+    saveOrders();
+
+    renderOrders();
+}
+
+// ОТОБРАЖЕНИЕ
+function renderOrders(){
+
+    const list =
+        document.getElementById("ordersList");
+
+    list.innerHTML = "";
+
+    // ФИЛЬТР
+    let visibleOrders = orders;
+
+    // Для исполнителей показываем только опубликованные
+    if(currentUser.role === "executor"){
+
+        visibleOrders =
+            orders.filter(o => o.published);
+    }
+
+    // Для заказчиков показываем только свои
+    if(currentUser.role === "customer"){
+
+        visibleOrders =
+            orders.filter(o =>
+                o.customer === currentUser.username
+            );
+    }
+
+    if(visibleOrders.length === 0){
+
+        list.innerHTML =
+            "<p>Заказов пока нет</p>";
+
+        return;
+    }
+
+    visibleOrders.forEach(order => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "order";
+
+        div.innerHTML = `
+
+            <div class="badge">
+                ${order.category}
+            </div>
+
+            <h3>${order.title}</h3>
+
+            <p>
+                <b>Описание:</b>
+                ${order.description}
+            </p>
+
+            <p>
+                <b>Место:</b>
+                ${order.place}
+            </p>
+
+            <p>
+                <b>Контакты:</b>
+                ${order.contact}
+            </p>
+
+            <p>
+                <b>Заказчик:</b>
+                ${order.customer}
+            </p>
+
+            <div class="price">
+                ${order.price} €
+            </div>
+        `;
+
+        // НЕ ОПУБЛИКОВАН
+        if(!order.published){
+
+            div.innerHTML += `
+                <div class="notPublished">
+                    Ожидает публикации админом
+                </div>
             `;
+        }
 
-            // Если заказ принят
-            if(order.acceptedBy){
-                div.innerHTML += `
-                    <div class="accepted">
-                        Заказ принял: ${order.acceptedBy}
-                    </div>
-                `;
+        // ПРИНЯТ
+        if(order.acceptedBy){
+
+            div.innerHTML += `
+                <div class="accepted">
+                    Заказ принял:
+                    ${order.acceptedBy}
+                </div>
+            `;
+        }
+
+        // ИСПОЛНИТЕЛЬ
+        if(
+            currentUser.role === "executor" &&
+            order.published &&
+            !order.acceptedBy
+        ){
+
+            const btn =
+                document.createElement("button");
+
+            btn.innerText = "Принять заказ";
+
+            btn.onclick = () =>
+                acceptOrder(order.id);
+
+            div.appendChild(btn);
+        }
+
+        // АДМИН
+        if(currentUser.role === "admin"){
+
+            const panel =
+                document.createElement("div");
+
+            panel.className = "adminPanel";
+
+            // КНОПКА ПУБЛИКАЦИИ
+            if(!order.published){
+
+                const publishBtn =
+                    document.createElement("button");
+
+                publishBtn.className = "publishBtn";
+
+                publishBtn.innerText =
+                    "Опубликовать";
+
+                publishBtn.onclick = () =>
+                    publishOrder(order.id);
+
+                panel.appendChild(publishBtn);
             }
 
-            // Кнопка принятия для исполнителя
-            if(
-                currentUser.role === "executor" &&
-                !order.acceptedBy
-            ){
-                const btn = document.createElement("button");
-                btn.innerText = "Принять заказ";
+            // КНОПКА УДАЛЕНИЯ
+            const deleteBtn =
+                document.createElement("button");
 
-                btn.onclick = () => acceptOrder(order.id);
+            deleteBtn.className = "deleteBtn";
 
-                div.appendChild(btn);
-            }
+            deleteBtn.innerText = "Удалить";
 
-            list.appendChild(div);
-        });
-    }
+            deleteBtn.onclick = () =>
+                deleteOrder(order.id);
 
-    // АВТОВХОД
-    if(currentUser){
-        showApp();
-    }
+            panel.appendChild(deleteBtn);
+
+            div.appendChild(panel);
+        }
+
+        list.appendChild(div);
+    });
+}
+
+// АВТОВХОД
+if(currentUser){
+    showApp();
+}
 
 </script>
 
