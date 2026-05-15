@@ -1,154 +1,434 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskMap – Neon Task Planner</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* --- General Styles --- */
-        body {
-            margin: 0;
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(to bottom, #000000, #10052f, #000000);
-            color: #fff;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Биржа Заказов</title>
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, sans-serif;
+    }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
+    body{
+        background:#f3f4f6;
+        color:#222;
+    }
 
-        h1 {
-            font-size: 3rem;
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
-            margin-bottom: 20px;
-        }
+    header{
+        background:#2563eb;
+        color:white;
+        padding:20px;
+        text-align:center;
+        font-size:28px;
+        font-weight:bold;
+    }
 
-        h2 {
-            color: #ff00ff;
-            text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
+    .container{
+        max-width:1100px;
+        margin:30px auto;
+        padding:20px;
+    }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #e0e0e0;
-        }
+    .card{
+        background:white;
+        border-radius:14px;
+        padding:20px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.1);
+        margin-bottom:20px;
+    }
 
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
+    h2{
+        margin-bottom:15px;
+        color:#2563eb;
+    }
 
-        li {
-            margin: 10px 0;
-            font-size: 1.1rem;
-            position: relative;
-            padding-left: 25px;
-        }
+    input, textarea, select{
+        width:100%;
+        padding:12px;
+        margin-top:10px;
+        border:1px solid #ccc;
+        border-radius:10px;
+        font-size:15px;
+    }
 
-        li::before {
-            content: "★";
-            position: absolute;
-            left: 0;
-            color: #00ffff;
-            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
-        }
+    textarea{
+        resize:vertical;
+        min-height:100px;
+    }
 
-        .button {
-            display: inline-block;
-            margin: 20px 10px;
-            padding: 15px 35px;
-            font-size: 1.1rem;
-            color: #fff;
-            background: #ff00ff;
-            border-radius: 12px;
-            box-shadow: 0 0 15px #ff00ff, 0 0 30px #ff00ff;
-            transition: all 0.3s ease;
-        }
+    button{
+        background:#2563eb;
+        color:white;
+        border:none;
+        padding:12px 18px;
+        border-radius:10px;
+        cursor:pointer;
+        margin-top:15px;
+        font-size:15px;
+        transition:0.2s;
+    }
 
-        .button:hover {
-            background: #00ffff;
-            box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
-            color: #000;
-        }
+    button:hover{
+        background:#1d4ed8;
+    }
 
-        .feature {
-            margin: 30px 0;
-        }
+    .hidden{
+        display:none;
+    }
 
-        .feature-icon {
-            font-size: 3rem;
-            color: #00ffff;
-            margin-bottom: 10px;
-            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
-        }
+    .topbar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+    }
 
-        footer {
-            margin-top: 50px;
-            padding: 20px 0;
-            font-size: 0.9rem;
-            color: #888;
-        }
+    .order{
+        border:1px solid #ddd;
+        padding:15px;
+        border-radius:12px;
+        margin-top:15px;
+    }
 
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2.2rem;
-            }
+    .badge{
+        display:inline-block;
+        padding:6px 12px;
+        border-radius:20px;
+        background:#dbeafe;
+        color:#1e40af;
+        font-size:13px;
+        margin-bottom:10px;
+    }
 
-            .button {
-                padding: 12px 25px;
-                font-size: 1rem;
-            }
-        }
-    </style>
+    .price{
+        font-size:22px;
+        color:green;
+        font-weight:bold;
+        margin-top:10px;
+    }
+
+    .accepted{
+        background:#dcfce7;
+        color:#166534;
+        padding:8px;
+        border-radius:8px;
+        margin-top:10px;
+    }
+
+    .role{
+        font-weight:bold;
+        color:#2563eb;
+    }
+
+    .logout{
+        background:#ef4444;
+    }
+
+    .logout:hover{
+        background:#dc2626;
+    }
+
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>TaskMap</h1>
-        <p>Organize your tasks with neon style! Add notes with addresses, dates, times, and links. Get notified when approaching or leaving task locations.</p>
 
-        <a href="#" class="button">Download on App Store</a>
+<header>
+    Биржа Заказов
+</header>
 
-        <h2>Features</h2>
-        <div class="feature">
-            <div class="feature-icon">📍</div>
-            <p>Location-based reminders – get notified when near or leaving task areas.</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🗓️</div>
-            <p>Calendar view – track daily tasks and completion progress.</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">✨</div>
-            <p>Neon interface – glowing indicators and interactive task markers.</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🔗</div>
-            <p>Task links – open websites, maps, or Waze directions directly from a task.</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">💡</div>
-            <p>Smart task management – prioritize, categorize, and organize efficiently.</p>
-        </div>
+<div class="container">
 
-        <a href="#" class="button">Learn More</a>
+    <!-- АВТОРИЗАЦИЯ -->
+    <div id="authBlock" class="card">
+        <h2>Вход / Регистрация</h2>
 
-        <footer>
-            &copy; 2026 TaskMap. All rights reserved.
-        </footer>
+        <input type="text" id="username" placeholder="Логин">
+        <input type="password" id="password" placeholder="Пароль">
+
+        <select id="role">
+            <option value="customer">Заказчик</option>
+            <option value="executor">Исполнитель</option>
+        </select>
+
+        <button onclick="register()">Регистрация</button>
+        <button onclick="login()">Вход</button>
     </div>
+
+    <!-- ОСНОВНОЙ САЙТ -->
+    <div id="app" class="hidden">
+
+        <div class="topbar">
+            <div>
+                Вы вошли как:
+                <span id="currentUser"></span>
+                (<span class="role" id="currentRole"></span>)
+            </div>
+
+            <button class="logout" onclick="logout()">Выйти</button>
+        </div>
+
+        <!-- ФОРМА СОЗДАНИЯ ЗАКАЗА -->
+        <div id="customerPanel" class="card hidden">
+            <h2>Создать заказ</h2>
+
+            <input type="text" id="orderTitle" placeholder="Название заказа">
+
+            <select id="orderCategory">
+                <option>Для дома</option>
+                <option>Доставка</option>
+                <option>Работы</option>
+                <option>Другое</option>
+            </select>
+
+            <textarea id="orderDescription" placeholder="Описание заказа"></textarea>
+
+            <input type="number" id="orderPrice" placeholder="Цена">
+
+            <input type="text" id="orderPlace" placeholder="Место">
+
+            <input type="text" id="orderContact" placeholder="Контактная информация">
+
+            <button onclick="createOrder()">Добавить заказ</button>
+        </div>
+
+        <!-- СПИСОК ЗАКАЗОВ -->
+        <div class="card">
+            <h2>Все заказы</h2>
+
+            <div id="ordersList"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    // ЛОКАЛЬНАЯ БАЗА
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+
+    // СОХРАНЕНИЕ
+    function saveUsers(){
+        localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    function saveOrders(){
+        localStorage.setItem("orders", JSON.stringify(orders));
+    }
+
+    function saveCurrentUser(){
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    }
+
+    // РЕГИСТРАЦИЯ
+    function register(){
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const role = document.getElementById("role").value;
+
+        if(!username || !password){
+            alert("Заполните все поля");
+            return;
+        }
+
+        const exists = users.find(u => u.username === username);
+
+        if(exists){
+            alert("Пользователь уже существует");
+            return;
+        }
+
+        users.push({
+            username,
+            password,
+            role
+        });
+
+        saveUsers();
+
+        alert("Регистрация успешна!");
+    }
+
+    // ВХОД
+    function login(){
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        const user = users.find(u =>
+            u.username === username &&
+            u.password === password
+        );
+
+        if(!user){
+            alert("Неверный логин или пароль");
+            return;
+        }
+
+        currentUser = user;
+        saveCurrentUser();
+
+        showApp();
+    }
+
+    // ВЫХОД
+    function logout(){
+        currentUser = null;
+        localStorage.removeItem("currentUser");
+
+        document.getElementById("authBlock").classList.remove("hidden");
+        document.getElementById("app").classList.add("hidden");
+    }
+
+    // ПОКАЗ САЙТА
+    function showApp(){
+
+        document.getElementById("authBlock").classList.add("hidden");
+        document.getElementById("app").classList.remove("hidden");
+
+        document.getElementById("currentUser").innerText = currentUser.username;
+        document.getElementById("currentRole").innerText =
+            currentUser.role === "customer"
+            ? "Заказчик"
+            : "Исполнитель";
+
+        // Показываем панель заказчика
+        if(currentUser.role === "customer"){
+            document.getElementById("customerPanel").classList.remove("hidden");
+        } else {
+            document.getElementById("customerPanel").classList.add("hidden");
+        }
+
+        renderOrders();
+    }
+
+    // СОЗДАНИЕ ЗАКАЗА
+    function createOrder(){
+
+        const title = document.getElementById("orderTitle").value;
+        const category = document.getElementById("orderCategory").value;
+        const description = document.getElementById("orderDescription").value;
+        const price = document.getElementById("orderPrice").value;
+        const place = document.getElementById("orderPlace").value;
+        const contact = document.getElementById("orderContact").value;
+
+        if(!title || !description || !price || !place || !contact){
+            alert("Заполните все поля");
+            return;
+        }
+
+        orders.unshift({
+            id: Date.now(),
+            title,
+            category,
+            description,
+            price,
+            place,
+            contact,
+            customer: currentUser.username,
+            acceptedBy: null
+        });
+
+        saveOrders();
+
+        renderOrders();
+
+        document.getElementById("orderTitle").value = "";
+        document.getElementById("orderDescription").value = "";
+        document.getElementById("orderPrice").value = "";
+        document.getElementById("orderPlace").value = "";
+        document.getElementById("orderContact").value = "";
+    }
+
+    // ПРИНЯТЬ ЗАКАЗ
+    function acceptOrder(id){
+
+        const order = orders.find(o => o.id === id);
+
+        if(order.acceptedBy){
+            alert("Заказ уже принят");
+            return;
+        }
+
+        order.acceptedBy = currentUser.username;
+
+        saveOrders();
+
+        renderOrders();
+    }
+
+    // ОТОБРАЖЕНИЕ ЗАКАЗОВ
+    function renderOrders(){
+
+        const list = document.getElementById("ordersList");
+
+        list.innerHTML = "";
+
+        if(orders.length === 0){
+            list.innerHTML = "<p>Пока заказов нет</p>";
+            return;
+        }
+
+        orders.forEach(order => {
+
+            const div = document.createElement("div");
+            div.className = "order";
+
+            div.innerHTML = `
+                <div class="badge">${order.category}</div>
+
+                <h3>${order.title}</h3>
+
+                <p><b>Описание:</b> ${order.description}</p>
+
+                <p><b>Место:</b> ${order.place}</p>
+
+                <p><b>Контакты:</b> ${order.contact}</p>
+
+                <p><b>Заказчик:</b> ${order.customer}</p>
+
+                <div class="price">${order.price} €</div>
+            `;
+
+            // Если заказ принят
+            if(order.acceptedBy){
+                div.innerHTML += `
+                    <div class="accepted">
+                        Заказ принял: ${order.acceptedBy}
+                    </div>
+                `;
+            }
+
+            // Кнопка принятия для исполнителя
+            if(
+                currentUser.role === "executor" &&
+                !order.acceptedBy
+            ){
+                const btn = document.createElement("button");
+                btn.innerText = "Принять заказ";
+
+                btn.onclick = () => acceptOrder(order.id);
+
+                div.appendChild(btn);
+            }
+
+            list.appendChild(div);
+        });
+    }
+
+    // АВТОВХОД
+    if(currentUser){
+        showApp();
+    }
+
+</script>
+
 </body>
 </html>
