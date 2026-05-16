@@ -265,6 +265,30 @@ button{
     }
 
 }
+    /* ВСТАВЬ В САМЫЙ НИЗ <style> */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+    padding:20px;
+}
+
+.modalContent{
+    width:100%;
+    max-width:450px;
+    background:rgba(20,20,22,0.96);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(25px);
+    border-radius:30px;
+    padding:30px;
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.45);
+}
 
 </style>
 </head>
@@ -295,10 +319,15 @@ button{
             <option value="executor">Исполнитель</option>
         </select>
 
-        <button class="registerBtn"
-                onclick="register()">
-            Регистрация
-        </button>
+        
+
+<button class="registerBtn"
+
+        onclick="openRegisterModal()">
+
+    Регистрация
+
+</button>
 
         <button class="loginBtn"
                 onclick="login()">
@@ -606,24 +635,55 @@ function saveCurrentUser(){
     );
 }
 
-/* REGISTER */
-function register(){
+/* УДАЛИ СТАРУЮ function register() */
+
+
+/* ВСТАВЬ ВМЕСТО НЕЁ */
+
+function openRegisterModal(){
+
+    document.getElementById("registerModal")
+        .classList.remove("hidden");
+}
+
+function closeRegisterModal(){
+
+    document.getElementById("registerModal")
+        .classList.add("hidden");
+}
+
+function registerUser(){
 
     const username =
-        document.getElementById("username").value.trim();
+        document.getElementById("regUsername")
+        .value.trim();
 
     const password =
-        document.getElementById("password").value.trim();
+        document.getElementById("regPassword")
+        .value.trim();
+
+    const password2 =
+        document.getElementById("regPassword2")
+        .value.trim();
 
     const role =
-        document.getElementById("role").value;
+        document.getElementById("regRole")
+        .value;
 
-    if(!username || !password){
-        alert("Заполните поля");
+    if(!username || !password || !password2){
+
+        alert("Заполните все поля");
+        return;
+    }
+
+    if(password !== password2){
+
+        alert("Пароли не совпадают");
         return;
     }
 
     if(username === "admin"){
+
         alert("Этот логин запрещен");
         return;
     }
@@ -632,6 +692,7 @@ function register(){
         users.find(u => u.username === username);
 
     if(exists){
+
         alert("Пользователь уже существует");
         return;
     }
@@ -656,6 +717,12 @@ function register(){
     saveUsers();
 
     alert("Регистрация успешна");
+
+    closeRegisterModal();
+
+    document.getElementById("regUsername").value = "";
+    document.getElementById("regPassword").value = "";
+    document.getElementById("regPassword2").value = "";
 }
 
 /* LOGIN */
@@ -1272,5 +1339,64 @@ if(currentUser){
 
 </script>
 
+    <div id="registerModal" class="modal hidden">
+
+    <div class="modalContent">
+
+        <h2>Регистрация</h2>
+
+        <input type="text"
+
+               id="regUsername"
+
+               placeholder="Логин">
+
+        <input type="password"
+
+               id="regPassword"
+
+               placeholder="Пароль">
+
+        <input type="password"
+
+               id="regPassword2"
+
+               placeholder="Повторите пароль">
+
+        <select id="regRole">
+
+            <option value="customer">
+
+                Заказчик
+
+            </option>
+
+            <option value="executor">
+
+                Исполнитель
+
+            </option>
+
+        </select>
+
+        <button class="loginBtn"
+
+                onclick="registerUser()">
+
+            Создать аккаунт
+
+        </button>
+
+        <button class="logout"
+
+                onclick="closeRegisterModal()">
+
+            Закрыть
+
+        </button>
+
+    </div>
+
+</div>
 </body>
 </html>
