@@ -1467,16 +1467,66 @@ function toggleExecutors(){
 
 function renderExecutors(){
 
-    const list =
-        document.getElementById("executorsList");
-
+    const list = document.getElementById("executorsList");
     list.innerHTML = "";
 
-   users.filter(u =>
-    u.role === "executor" &&
-    u.subscription === true &&
-    u.profileStatus === "approved"
-);
+    let executors = users.filter(u =>
+        u.role === "executor" &&
+        u.subscription === true
+    );
+
+    const category = document.getElementById("executorFilter").value;
+
+    if(category !== "all"){
+        executors = executors.filter(e =>
+            e.profile?.category === category
+        );
+    }
+
+    // 🔥 РАЗДЕЛЕНИЕ ПО РОЛЯМ
+
+    if(currentUser.role === "customer"){
+        executors = executors.filter(e =>
+            e.profileStatus === "approved"
+        );
+    }
+
+    if(currentUser.role === "executor"){
+        executors = executors.filter(e =>
+            e.username === currentUser.username
+        );
+    }
+
+    if(executors.length === 0){
+        list.innerHTML =
+            "<p style='margin-top:15px;color:#9ca3af;'>Исполнителей нет</p>";
+        return;
+    }
+
+    executors.forEach(executor => {
+
+        const div = document.createElement("div");
+        div.className = "profileCard";
+
+        div.innerHTML = `
+            <div class="badge">
+                ${executor.profile?.category || "Без категории"}
+            </div>
+
+            <div class="profileName">
+                ${executor.profile?.name || executor.username}
+            </div>
+
+            <div class="profileInfo">
+                📍 ${executor.profile?.location || "Не указано"} <br>
+                📞 ${executor.profile?.phone || "Не указано"} <br><br>
+                ${executor.profile?.description || "Нет информации"}
+            </div>
+        `;
+
+        list.appendChild(div);
+    });
+}
 
 
     const category =
