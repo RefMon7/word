@@ -1279,22 +1279,37 @@ function logout(){
 /* SHOW */
 function showApp(){
 
-    removeAdminUI(); // чистим всегда
+    // =========================
+    // 1. ЖЁСТКО ЧИСТИМ АДМИНКУ
+    // =========================
+    const adminMenu = document.getElementById("adminMenu");
+    const adminProfiles = document.getElementById("adminProfiles");
+    const adminUsers = document.getElementById("adminUsers");
+    const adminOrders = document.getElementById("adminOrders");
 
-    if(currentUser.role !== "admin"){
-        removeAdminUI(); // двойная защита
-    }
+    if(adminMenu) adminMenu.remove();
+    if(adminProfiles) adminProfiles.remove();
+    if(adminUsers) adminUsers.remove();
+    if(adminOrders) adminOrders.remove();
 
-    document.getElementById("authBlock")
-        .classList.add("hidden");
+    // дополнительно сбрасываем UI вкладки
+    document.querySelectorAll(".adminPanel").forEach(el => {
+        if(el.closest("#app")) el.remove();
+    });
 
-    document.getElementById("app")
-        .classList.remove("hidden");
+    // =========================
+    // 2. БАЗОВЫЙ UI
+    // =========================
+    document.getElementById("authBlock").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
 
-    document.getElementById("currentUser")
-        .innerText = currentUser.username;
+    document.getElementById("currentUser").innerText = currentUser.username;
 
     let roleText = "";
+
+    // =========================
+    // 3. РОЛИ
+    // =========================
 
     if(currentUser.role === "customer"){
         roleText = "Заказчик";
@@ -1305,90 +1320,73 @@ function showApp(){
     }
 
     if(currentUser.role === "admin"){
-    roleText = "Администратор";
+        roleText = "Администратор";
 
-    document.getElementById("customerPanel").classList.add("hidden");
-    document.getElementById("executorsPanel").classList.add("hidden");
-    document.getElementById("subscriptionPanel").classList.add("hidden");
-    document.getElementById("executorProfilePanel").classList.add("hidden");
-    document.getElementById("filterPanel").classList.add("hidden");
+        // скрываем обычные панели
+        document.getElementById("customerPanel").classList.add("hidden");
+        document.getElementById("executorsPanel").classList.add("hidden");
+        document.getElementById("subscriptionPanel").classList.add("hidden");
+        document.getElementById("executorProfilePanel").classList.add("hidden");
+        document.getElementById("filterPanel").classList.add("hidden");
 
-    renderAdminUI(); // 👈 ОДНА функция
-}
+        // строим админку
+        renderAdminUI();
+    }
 
-    document.getElementById("currentRole")
-        .innerText = roleText;
+    document.getElementById("currentRole").innerText = roleText;
 
-    /* CUSTOMER */
+    // =========================
+    // 4. CUSTOMER UI
+    // =========================
     if(currentUser.role === "customer"){
 
-        document.getElementById("customerPanel")
-            .classList.remove("hidden");
-
-        document.getElementById("executorsPanel")
-            .classList.remove("hidden");
+        document.getElementById("customerPanel").classList.remove("hidden");
+        document.getElementById("executorsPanel").classList.remove("hidden");
 
     } else {
 
-        document.getElementById("customerPanel")
-            .classList.add("hidden");
-
-        document.getElementById("executorsPanel")
-            .classList.add("hidden");
+        document.getElementById("customerPanel").classList.add("hidden");
+        document.getElementById("executorsPanel").classList.add("hidden");
     }
 
-    /* EXECUTOR */
+    // =========================
+    // 5. EXECUTOR UI
+    // =========================
     if(currentUser.role === "executor"){
 
-        document.getElementById("subscriptionPanel")
-            .classList.remove("hidden");
-
-        document.getElementById("filterPanel")
-            .classList.remove("hidden");
+        document.getElementById("subscriptionPanel").classList.remove("hidden");
+        document.getElementById("filterPanel").classList.remove("hidden");
 
         updateSubscriptionStatus();
 
-        // 🔒 Профиль доступен только после подписки
         if(currentUser.subscription){
 
-            document.getElementById("executorProfilePanel")
-                .classList.remove("hidden");
-
+            document.getElementById("executorProfilePanel").classList.remove("hidden");
             loadExecutorProfile();
 
         } else {
-
-            document.getElementById("executorProfilePanel")
-                .classList.add("hidden");
+            document.getElementById("executorProfilePanel").classList.add("hidden");
         }
 
     } else {
 
-        document.getElementById("subscriptionPanel")
-            .classList.add("hidden");
-
-        document.getElementById("executorProfilePanel")
-            .classList.add("hidden");
-
-        document.getElementById("filterPanel")
-            .classList.add("hidden");
+        document.getElementById("subscriptionPanel").classList.add("hidden");
+        document.getElementById("executorProfilePanel").classList.add("hidden");
+        document.getElementById("filterPanel").classList.add("hidden");
     }
 
+    // =========================
+    // 6. ОЧЕНЬ ВАЖНО: СБРОС СТАРЫХ РЕНДЕРОВ
+    // =========================
     renderOrders();
 
-    const adminPanel =
-    document.getElementById("adminProfiles");
-
-if(currentUser.role === "admin"){
-
-    renderAdminProfiles();
-
-}else{
-
-    if(adminPanel){
-        adminPanel.remove();
+    // если не админ — гарантированно удаляем админку ещё раз после рендера
+    if(currentUser.role !== "admin"){
+        document.getElementById("adminMenu")?.remove();
+        document.getElementById("adminProfiles")?.remove();
+        document.getElementById("adminUsers")?.remove();
+        document.getElementById("adminOrders")?.remove();
     }
-}
 }
 
 /* PROFILE SAVE */
