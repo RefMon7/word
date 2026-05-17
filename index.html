@@ -1267,6 +1267,8 @@ function logout(){
 
     localStorage.removeItem("currentUser");
 
+    removeAdminUI(); // 👈 ДОБАВИТЬ
+
     document.getElementById("authBlock")
         .classList.remove("hidden");
 
@@ -1276,6 +1278,8 @@ function logout(){
 
 /* SHOW */
 function showApp(){
+    
+    removeAdminUI(); 
 
     document.getElementById("authBlock")
         .classList.add("hidden");
