@@ -932,6 +932,7 @@ button:active{
                     onclick="saveExecutorProfile()">
                 Сохранить профиль
             </button>
+            <div id="profileStatusText" style="margin-top:12px;"></div>
 
         </div>
 
@@ -1202,22 +1203,24 @@ function registerUser(){
         return;
     }
 
-    users.push({
+  users.push({
 
-        username,
-        password,
-        role,
+    username,
+    password,
+    role,
 
-        subscription:false,
+    subscription:false,
+    profileStatus:"pending",
 
-        profile:{
-            name:"",
-            phone:"",
-            location:"",
-            category:"",
-            description:""
-        }
-    });
+    profile:{
+        name:"",
+        phone:"",
+        location:"",
+        category:"",
+        description:""
+    }
+});
+
 
     saveUsers();
 
@@ -1347,6 +1350,10 @@ function showApp(){
     }
 
     renderOrders();
+
+if(currentUser.role === "admin"){
+    renderAdminProfiles();
+}
 }
 
 /* PROFILE SAVE */
@@ -1380,6 +1387,19 @@ function saveExecutorProfile(){
         return u;
     });
 
+    currentUser.profileStatus = "pending";
+
+    users = users.map(u => {
+
+        if(u.username === currentUser.username){
+
+            u.profile = currentUser.profile;
+            u.profileStatus = "pending";
+        }
+
+        return u;
+    });
+
     saveUsers();
 
     saveCurrentUser();
@@ -1390,24 +1410,48 @@ function saveExecutorProfile(){
 /* LOAD PROFILE */
 function loadExecutorProfile(){
 
-    if(!currentUser.profile){
-        return;
+    if(currentUser.profile){
+
+        document.getElementById("executorName").value =
+            currentUser.profile.name || "";
+
+        document.getElementById("executorPhone").value =
+            currentUser.profile.phone || "";
+
+        document.getElementById("executorLocation").value =
+            currentUser.profile.location || "";
+
+        document.getElementById("executorCategory").value =
+            currentUser.profile.category || "Для дома";
+
+        document.getElementById("executorDescription").value =
+            currentUser.profile.description || "";
     }
 
-    document.getElementById("executorName").value =
-        currentUser.profile.name || "";
+    const statusText =
+        document.getElementById("profileStatusText");
 
-    document.getElementById("executorPhone").value =
-        currentUser.profile.phone || "";
+    if(!statusText) return;
 
-    document.getElementById("executorLocation").value =
-        currentUser.profile.location || "";
+    if(currentUser.profileStatus === "pending"){
+        statusText.innerText = "⏳ Проверяется администратором";
+        statusText.style.color = "#fbbf24";
+    }
 
-    document.getElementById("executorCategory").value =
-        currentUser.profile.category || "Для дома";
+    else if(currentUser.profileStatus === "approved"){
+        statusText.innerText = "✅ Профиль одобрен";
+        statusText.style.color = "#86efac";
+    }
 
-    document.getElementById("executorDescription").value =
-        currentUser.profile.description || "";
+    else if(currentUser.profileStatus === "rejected"){
+        statusText.innerText = "❌ Профиль отклонён";
+        statusText.style.color = "#f87171";
+    }
+
+    else{
+        statusText.innerText = "Профиль не отправлен на проверку";
+        statusText.style.color = "#9ca3af";
+    }
 }
 
 /* EXECUTORS */
@@ -1428,11 +1472,12 @@ function renderExecutors(){
 
     list.innerHTML = "";
 
-    let executors =
-    users.filter(u =>
-        u.role === "executor" &&
-        u.subscription === true
-    );
+   users.filter(u =>
+    u.role === "executor" &&
+    u.subscription === true &&
+    u.profileStatus === "approved"
+);
+
 
     const category =
         document.getElementById("executorFilter").value;
@@ -1848,6 +1893,105 @@ if(
 
             div.appendChild(panel);
         }
+
+        list.appendChild(div);
+    });
+}
+
+
+/* ADMIN PROFILE MODERATION */
+function renderAdminProfiles(){
+
+    const app = document.getElementById("app");
+
+    let panel = document.getElementById("adminProfiles");
+
+    if(!panel){
+
+        panel = document.createElement("div");
+        panel.className = "card";
+        panel.id = "adminProfiles";
+
+        panel.innerHTML = `
+            <h2>Проверка профилей исполнителей</h2>
+            <div id="adminProfilesList"></div>
+        `;
+
+        app.appendChild(panel);
+    }
+
+    const list =
+        document.getElementById("adminProfilesList");
+
+    list.innerHTML = "";
+
+    const executors =
+        users.filter(u => u.role === "executor");
+
+    executors.forEach(executor => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "profileCard";
+
+        div.innerHTML = `
+
+            <div class="profileName">
+                ${executor.profile?.name || executor.username}
+            </div>
+
+            <div class="profileInfo">
+
+                📍 ${executor.profile?.location || "—"} <br>
+                📞 ${executor.profile?.phone || "—"} <br><br>
+
+                <b>Статус:</b>
+                ${
+                    executor.profileStatus === "approved"
+                        ? "✅ Одобрен"
+                        : executor.profileStatus === "rejected"
+                        ? "❌ Отклонён"
+                        : "⏳ Проверяется"
+                }
+            </div>
+        `;
+
+        const panelBtns =
+            document.createElement("div");
+
+        panelBtns.className = "adminPanel";
+
+        const approveBtn =
+            document.createElement("button");
+
+        approveBtn.className = "publishBtn";
+        approveBtn.innerText = "Одобрить";
+
+        approveBtn.onclick = () => {
+
+            executor.profileStatus = "approved";
+            saveUsers();
+            renderAdminProfiles();
+        };
+
+        const rejectBtn =
+            document.createElement("button");
+
+        rejectBtn.className = "deleteBtn";
+        rejectBtn.innerText = "Отклонить";
+
+        rejectBtn.onclick = () => {
+
+            executor.profileStatus = "rejected";
+            saveUsers();
+            renderAdminProfiles();
+        };
+
+        panelBtns.appendChild(approveBtn);
+        panelBtns.appendChild(rejectBtn);
+
+        div.appendChild(panelBtns);
 
         list.appendChild(div);
     });
