@@ -520,6 +520,43 @@ button:active{
     }
 }
 
+.order,
+.profileCard,
+.card{
+    animation:fadeUp .35s ease;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#3b82f6;
+    border-radius:999px;
+}
+
+::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+.order:hover,
+.profileCard:hover{
+    transform:translateY(-3px);
+    border-color:rgba(255,255,255,0.12);
+}
+
 </style>
 </head>
 
