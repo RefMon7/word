@@ -2030,13 +2030,14 @@ function renderAdminUsers(){
 
 function renderAdminUI(){
 
-    removeAdminUI(); // 🔥 сначала чистим старое
+    removeAdminUI();
 
     renderAdminPanelMenu();
     renderAdminProfiles();
     renderAdminUsers();
+    renderAdminOrders(); // 👈 добавили
 
-    showAdminTab("profiles"); // по умолчанию открываем профили
+    showAdminTab("profiles");
 }
 
 
@@ -2064,6 +2065,10 @@ function renderAdminPanelMenu(){
                 Пользователи
             </button>
 
+            <button class="loginBtn" onclick="showAdminTab('orders')">
+                Заказы
+            </button>
+
         </div>
     `;
 
@@ -2074,9 +2079,11 @@ function showAdminTab(tab){
 
     const profiles = document.getElementById("adminProfiles");
     const users = document.getElementById("adminUsers");
+    const orders = document.getElementById("adminOrders");
 
     if(profiles) profiles.classList.add("hidden");
     if(users) users.classList.add("hidden");
+    if(orders) orders.classList.add("hidden");
 
     if(tab === "profiles" && profiles){
         profiles.classList.remove("hidden");
@@ -2085,6 +2092,86 @@ function showAdminTab(tab){
     if(tab === "users" && users){
         users.classList.remove("hidden");
     }
+
+    if(tab === "orders" && orders){
+        orders.classList.remove("hidden");
+    }
+}
+
+function renderAdminOrders(){
+
+    const old = document.getElementById("adminOrders");
+    if(old) old.remove();
+
+    const app = document.getElementById("app");
+
+    const panel = document.createElement("div");
+    panel.className = "card hidden";
+    panel.id = "adminOrders";
+
+    panel.innerHTML = `
+        <h2>Все заказы (админ)</h2>
+        <div id="adminOrdersList"></div>
+    `;
+
+    app.appendChild(panel);
+
+    const list = document.getElementById("adminOrdersList");
+
+    orders.forEach(order => {
+
+        const div = document.createElement("div");
+        div.className = "order";
+
+        div.innerHTML = `
+            <div class="badge">${order.category}</div>
+
+            <h3>${order.title}</h3>
+
+            <p>${order.description}</p>
+
+            <p><b>Цена:</b> ${order.price} €</p>
+
+            <p><b>Заказчик:</b> ${order.customer}</p>
+
+            <p><b>Статус:</b> ${order.published ? "Опубликован" : "Не опубликован"}</p>
+        `;
+
+        const panelBtns = document.createElement("div");
+        panelBtns.className = "adminPanel";
+
+        if(!order.published){
+
+            const publishBtn = document.createElement("button");
+            publishBtn.className = "publishBtn";
+            publishBtn.innerText = "Опубликовать";
+
+            publishBtn.onclick = () => {
+                order.published = true;
+                saveOrders();
+                renderAdminOrders();
+            };
+
+            panelBtns.appendChild(publishBtn);
+        }
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "deleteBtn";
+        deleteBtn.innerText = "Удалить";
+
+        deleteBtn.onclick = () => {
+            if(confirm("Удалить заказ?")){
+                orders = orders.filter(o => o.id !== order.id);
+                saveOrders();
+                renderAdminOrders();
+            }
+        };
+
+        panelBtns.appendChild(deleteBtn);
+
+        div.appendChild(panelBtns);
+        list.appendChild(div);
+    });
 }
 
 function removeAdminUI(){
