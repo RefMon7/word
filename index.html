@@ -942,6 +942,18 @@ function registerUser(){
         return;
     }
 
+    /* НОВАЯ ПРОВЕРКА ПАРОЛЯ */
+    const passwordRegex = /^[A-Za-z0-9]{8,}$/;
+
+    if(!passwordRegex.test(password)){
+
+        alert(
+            "Пароль должен содержать минимум 8 букв или цифр"
+        );
+
+        return;
+    }
+
     if(password !== password2){
 
         alert("Пароли не совпадают");
