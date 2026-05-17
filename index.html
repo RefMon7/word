@@ -1312,7 +1312,7 @@ function showApp(){
         document.getElementById("executorsPanel")
             .classList.remove("hidden");
 
-    }else{
+    } else {
 
         document.getElementById("customerPanel")
             .classList.add("hidden");
@@ -1327,17 +1327,26 @@ function showApp(){
         document.getElementById("subscriptionPanel")
             .classList.remove("hidden");
 
-        document.getElementById("executorProfilePanel")
-            .classList.remove("hidden");
-
         document.getElementById("filterPanel")
             .classList.remove("hidden");
 
         updateSubscriptionStatus();
 
-        loadExecutorProfile();
+        // 🔒 Профиль доступен только после подписки
+        if(currentUser.subscription){
 
-    }else{
+            document.getElementById("executorProfilePanel")
+                .classList.remove("hidden");
+
+            loadExecutorProfile();
+
+        } else {
+
+            document.getElementById("executorProfilePanel")
+                .classList.add("hidden");
+        }
+
+    } else {
 
         document.getElementById("subscriptionPanel")
             .classList.add("hidden");
@@ -1351,60 +1360,48 @@ function showApp(){
 
     renderOrders();
 
-if(currentUser.role === "admin"){
-    renderAdminProfiles();
-}
+    if(currentUser.role === "admin"){
+        renderAdminProfiles();
+    }
 }
 
 /* PROFILE SAVE */
 function saveExecutorProfile(){
 
+    // 🔒 БЛОКИРОВКА БЕЗ ПОДПИСКИ
+    if(!currentUser.subscription){
+        alert("Сначала оформите подписку (15€)");
+        return;
+    }
+
     currentUser.profile = {
 
-        name:
-            document.getElementById("executorName").value,
-
-        phone:
-            document.getElementById("executorPhone").value,
-
-        location:
-            document.getElementById("executorLocation").value,
-
-        category:
-            document.getElementById("executorCategory").value,
-
-        description:
-            document.getElementById("executorDescription").value
+        name: document.getElementById("executorName").value,
+        phone: document.getElementById("executorPhone").value,
+        location: document.getElementById("executorLocation").value,
+        category: document.getElementById("executorCategory").value,
+        description: document.getElementById("executorDescription").value
     };
 
+    // обновляем пользователя в массиве users
     users = users.map(u => {
 
         if(u.username === currentUser.username){
 
-            u.profile = currentUser.profile;
-        }
-
-        return u;
-    });
-
-    currentUser.profileStatus = "pending";
-
-    users = users.map(u => {
-
-        if(u.username === currentUser.username){
-
-            u.profile = currentUser.profile;
-            u.profileStatus = "pending";
+            return {
+                ...u,
+                profile: currentUser.profile,
+                profileStatus: "pending"
+            };
         }
 
         return u;
     });
 
     saveUsers();
-
     saveCurrentUser();
 
-    alert("Профиль сохранен");
+    alert("Профиль сохранен и отправлен на проверку");
 }
 
 /* LOAD PROFILE */
