@@ -1070,15 +1070,16 @@ button:active{
         </div>
 
         <!-- ORDERS -->
-        <div class="card">
+        <!-- ORDERS -->
+<div class="card" id="ordersCard">
 
-            <h2>
-                Все заказы
-            </h2>
+    <h2>
+        Все заказы
+    </h2>
 
-            <div id="ordersList"></div>
+    <div id="ordersList"></div>
 
-        </div>
+</div>
 
     </div>
 
@@ -1310,6 +1311,11 @@ function showApp(){
     // =========================
     // 3. РОЛИ
     // =========================
+    if(currentUser.role !== "admin"){
+
+    document.getElementById("ordersCard")
+        .classList.remove("hidden");
+}
 
     if(currentUser.role === "customer"){
         roleText = "Заказчик";
@@ -1328,7 +1334,7 @@ function showApp(){
         document.getElementById("subscriptionPanel").classList.add("hidden");
         document.getElementById("executorProfilePanel").classList.add("hidden");
         document.getElementById("filterPanel").classList.add("hidden");
-
+        document.getElementById("ordersCard").classList.add("hidden");
         // строим админку
         renderAdminUI();
     }
@@ -1918,6 +1924,10 @@ if(
 /* ADMIN PROFILE MODERATION */
 function renderAdminProfiles(){
 
+    const previousSearch =
+    document.getElementById("adminProfilesSearch")
+    ?.value || "";
+
     const oldPanel = document.getElementById("adminProfiles");
     if(oldPanel) oldPanel.remove();
 
@@ -1928,15 +1938,42 @@ function renderAdminProfiles(){
     panel.id = "adminProfiles";
 
     panel.innerHTML = `
-        <h2>Проверка профилей исполнителей</h2>
-        <div id="adminProfilesList"></div>
-    `;
+    <h2>Проверка профилей исполнителей</h2>
+
+    <input
+        type="text"
+        id="adminProfilesSearch"
+        placeholder="Поиск профилей..."
+        oninput="renderAdminProfiles()"
+        value="${previousSearch}"
+    >
+
+    <div id="adminProfilesList"></div>
+`;
 
     app.appendChild(panel);
 
     const list = document.getElementById("adminProfilesList");
 
-    const executors = users.filter(u => u.role === "executor");
+   const search =
+    document.getElementById("adminProfilesSearch")
+    ?.value
+    ?.toLowerCase() || "";
+
+const executors = users.filter(u => {
+
+    if(u.role !== "executor") return false;
+
+    const text = `
+        ${u.username}
+        ${u.profile?.name || ""}
+        ${u.profile?.location || ""}
+        ${u.profile?.phone || ""}
+        ${u.profile?.description || ""}
+    `.toLowerCase();
+
+    return text.includes(search);
+});
 
     executors.forEach(executor => {
 
@@ -1944,24 +1981,36 @@ function renderAdminProfiles(){
         div.className = "profileCard";
 
         div.innerHTML = `
-            <div class="profileName">
-                ${executor.profile?.name || executor.username}
-            </div>
+    <div class="profileName">
+        ${executor.profile?.name || executor.username}
+    </div>
 
-            <div class="profileInfo">
-                📍 ${executor.profile?.location || "—"} <br>
-                📞 ${executor.profile?.phone || "—"} <br><br>
+    <div class="profileInfo">
 
-                <b>Статус:</b>
-                ${
-                    executor.profileStatus === "approved"
-                        ? "✅ Одобрен"
-                        : executor.profileStatus === "rejected"
-                        ? "❌ Отклонён"
-                        : "⏳ Проверяется"
-                }
-            </div>
-        `;
+        📍 ${executor.profile?.location || "—"} <br>
+
+        📞 ${executor.profile?.phone || "—"} <br>
+
+        🧩 Категория:
+        ${executor.profile?.category || "—"} <br><br>
+
+        <b>Описание:</b><br>
+
+        ${executor.profile?.description || "Нет описания"} <br><br>
+
+        <b>Статус:</b>
+
+<span class="profileStatus">
+${
+    executor.profileStatus === "approved"
+        ? "✅ Одобрен"
+        : executor.profileStatus === "rejected"
+        ? "❌ Отклонён"
+        : "⏳ Проверяется"
+}
+</span>
+    </div>
+`;
 
         const panelBtns = document.createElement("div");
         panelBtns.className = "adminPanel";
@@ -1971,20 +2020,32 @@ function renderAdminProfiles(){
         approveBtn.innerText = "Одобрить";
 
         approveBtn.onclick = () => {
-            executor.profileStatus = "approved";
-            saveUsers();
-            renderAdminProfiles();
-        };
+
+    executor.profileStatus = "approved";
+
+    saveUsers();
+
+    const status =
+        div.querySelector(".profileStatus");
+
+    status.innerHTML = "✅ Одобрен";
+};
 
         const rejectBtn = document.createElement("button");
         rejectBtn.className = "deleteBtn";
         rejectBtn.innerText = "Отклонить";
 
         rejectBtn.onclick = () => {
-            executor.profileStatus = "rejected";
-            saveUsers();
-            renderAdminProfiles();
-        };
+
+    executor.profileStatus = "rejected";
+
+    saveUsers();
+
+    const status =
+        div.querySelector(".profileStatus");
+
+    status.innerHTML = "❌ Отклонён";
+};
 
         panelBtns.appendChild(approveBtn);
         panelBtns.appendChild(rejectBtn);
@@ -1997,31 +2058,76 @@ function renderAdminProfiles(){
 
 function renderAdminUsers(){
 
-    const old = document.getElementById("adminUsers");
-    if(old) old.remove();
+    let panel =
+        document.getElementById("adminUsers");
 
-    const app = document.getElementById("app");
+    const app =
+        document.getElementById("app");
 
-    const panel = document.createElement("div");
-    panel.className = "card hidden";
-    panel.id = "adminUsers";
+    if(!panel){
 
-    panel.innerHTML = `
-        <h2>Пользователи</h2>
-        <div id="adminUsersList"></div>
-    `;
+        panel = document.createElement("div");
 
-    app.appendChild(panel);
+        panel.className = "card hidden";
 
-    const list = document.getElementById("adminUsersList");
+        panel.id = "adminUsers";
 
-    users.forEach(u => {
+        panel.innerHTML = `
+            <h2>Пользователи</h2>
 
-        const div = document.createElement("div");
+            <input
+                type="text"
+                id="adminUsersSearch"
+                placeholder="Поиск пользователей..."
+                oninput="renderAdminUsers()"
+            >
+
+            <div id="adminUsersList"></div>
+        `;
+
+        app.appendChild(panel);
+    }
+
+    const list =
+        document.getElementById("adminUsersList");
+
+    list.innerHTML = "";
+
+    const search =
+        document.getElementById("adminUsersSearch")
+        ?.value
+        ?.toLowerCase() || "";
+
+    const filteredUsers = users.filter(u => {
+
+        const text = `
+            ${u.username}
+            ${u.role}
+            ${u.profileStatus || ""}
+        `.toLowerCase();
+
+        return text.includes(search);
+    });
+
+    if(filteredUsers.length === 0){
+
+        list.innerHTML =
+            "<p style='color:#9ca3af;'>Ничего не найдено</p>";
+
+        return;
+    }
+
+    filteredUsers.forEach(u => {
+
+        const div =
+            document.createElement("div");
+
         div.className = "profileCard";
 
         div.innerHTML = `
-            <div class="profileName">${u.username}</div>
+            <div class="profileName">
+                ${u.username}
+            </div>
 
             <div class="profileInfo">
                 Роль: ${u.role} <br>
@@ -2108,33 +2214,116 @@ function showAdminTab(tab){
 
 function renderAdminOrders(){
 
-    if(currentUser.role !== "admin") return; // 🔥 ВАЖНО
+    if(currentUser.role !== "admin") return;
 
-    const old = document.getElementById("adminOrders");
-    if(old) old.remove();
+    let panel =
+        document.getElementById("adminOrders");
 
-    const app = document.getElementById("app");
+    const app =
+        document.getElementById("app");
 
-    const panel = document.createElement("div");
-    panel.className = "card hidden";
-    panel.id = "adminOrders";
+    if(!panel){
 
-    panel.innerHTML = `
-        <h2>Все заказы (админ)</h2>
-        <div id="adminOrdersList"></div>
-    `;
+        panel = document.createElement("div");
 
-    app.appendChild(panel);
+        panel.className = "card hidden";
 
-    const list = document.getElementById("adminOrdersList");
+        panel.id = "adminOrders";
 
-    orders.forEach(order => {
+        panel.innerHTML = `
+    <h2>Все заказы (админ)</h2>
 
-        const div = document.createElement("div");
+    <input
+        type="text"
+        id="adminOrdersSearch"
+        placeholder="Поиск заказов..."
+        oninput="renderAdminOrders()"
+    >
+
+    <select
+        id="adminOrdersFilter"
+        onchange="renderAdminOrders()"
+        style="margin-top:12px;"
+    >
+        <option value="all">
+            Все заказы
+        </option>
+
+        <option value="published">
+            Только опубликованные
+        </option>
+
+        <option value="notPublished">
+            Только неопубликованные
+        </option>
+    </select>
+
+    <div id="adminOrdersList"></div>
+`;
+
+        app.appendChild(panel);
+    }
+
+    const list =
+        document.getElementById("adminOrdersList");
+
+    list.innerHTML = "";
+
+    const search =
+        document.getElementById("adminOrdersSearch")
+        ?.value
+        ?.toLowerCase() || "";
+
+    const filter =
+    document.getElementById("adminOrdersFilter")
+    ?.value || "all";
+
+const filteredOrders = orders.filter(order => {
+
+    const text = `
+        ${order.title}
+        ${order.description}
+        ${order.customer}
+        ${order.category}
+        ${order.place}
+        ${order.contact}
+    `.toLowerCase();
+
+    const matchesSearch =
+        text.includes(search);
+
+    let matchesFilter = true;
+
+    if(filter === "published"){
+        matchesFilter = order.published === true;
+    }
+
+    if(filter === "notPublished"){
+        matchesFilter = order.published === false;
+    }
+
+    return matchesSearch && matchesFilter;
+});
+
+    if(filteredOrders.length === 0){
+
+        list.innerHTML =
+            "<p style='color:#9ca3af;'>Ничего не найдено</p>";
+
+        return;
+    }
+
+    filteredOrders.forEach(order => {
+
+        const div =
+            document.createElement("div");
+
         div.className = "order";
 
         div.innerHTML = `
-            <div class="badge">${order.category}</div>
+            <div class="badge">
+                ${order.category}
+            </div>
 
             <h3>${order.title}</h3>
 
@@ -2144,35 +2333,56 @@ function renderAdminOrders(){
 
             <p><b>Заказчик:</b> ${order.customer}</p>
 
-            <p><b>Статус:</b> ${order.published ? "Опубликован" : "Не опубликован"}</p>
+            <p>
+                <b>Статус:</b>
+                ${order.published
+                    ? "Опубликован"
+                    : "Не опубликован"}
+            </p>
         `;
 
-        const panelBtns = document.createElement("div");
+        const panelBtns =
+            document.createElement("div");
+
         panelBtns.className = "adminPanel";
 
         if(!order.published){
 
-            const publishBtn = document.createElement("button");
+            const publishBtn =
+                document.createElement("button");
+
             publishBtn.className = "publishBtn";
+
             publishBtn.innerText = "Опубликовать";
 
             publishBtn.onclick = () => {
+
                 order.published = true;
+
                 saveOrders();
+
                 renderAdminOrders();
             };
 
             panelBtns.appendChild(publishBtn);
         }
 
-        const deleteBtn = document.createElement("button");
+        const deleteBtn =
+            document.createElement("button");
+
         deleteBtn.className = "deleteBtn";
+
         deleteBtn.innerText = "Удалить";
 
         deleteBtn.onclick = () => {
+
             if(confirm("Удалить заказ?")){
-                orders = orders.filter(o => o.id !== order.id);
+
+                orders =
+                    orders.filter(o => o.id !== order.id);
+
                 saveOrders();
+
                 renderAdminOrders();
             }
         };
@@ -2180,6 +2390,7 @@ function renderAdminOrders(){
         panelBtns.appendChild(deleteBtn);
 
         div.appendChild(panelBtns);
+
         list.appendChild(div);
     });
 }
