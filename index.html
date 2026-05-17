@@ -1553,6 +1553,41 @@ function renderOrders(){
             div.appendChild(btn);
         }
 
+/* CUSTOMER DELETE */
+if(
+    currentUser.role === "customer" &&
+    order.customer === currentUser.username
+){
+
+    const panel =
+        document.createElement("div");
+
+    panel.className = "adminPanel";
+
+    const deleteBtn =
+        document.createElement("button");
+
+    deleteBtn.className =
+        "deleteBtn";
+
+    deleteBtn.innerText =
+        "Удалить заказ";
+
+    deleteBtn.onclick = () => {
+
+        const confirmDelete =
+            confirm("Удалить заказ?");
+
+        if(confirmDelete){
+            deleteOrder(order.id);
+        }
+    };
+
+    panel.appendChild(deleteBtn);
+
+    div.appendChild(panel);
+}
+
         /* ADMIN */
         if(currentUser.role === "admin"){
 
