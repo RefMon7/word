@@ -1902,6 +1902,12 @@ if(
 /* ADMIN PROFILE MODERATION */
 function renderAdminProfiles(){
 
+    if(!currentUser || currentUser.role !== "admin"){
+        return;
+    }
+
+    const app = document.getElementById("app");
+
     const app = document.getElementById("app");
 
     let panel = document.getElementById("adminProfiles");
