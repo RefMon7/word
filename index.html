@@ -1278,8 +1278,12 @@ function logout(){
 
 /* SHOW */
 function showApp(){
-    
-    removeAdminUI(); 
+
+    removeAdminUI(); // чистим всегда
+
+    if(currentUser.role !== "admin"){
+        removeAdminUI(); // двойная защита
+    }
 
     document.getElementById("authBlock")
         .classList.add("hidden");
@@ -2034,12 +2038,14 @@ function renderAdminUsers(){
 
 function renderAdminUI(){
 
+    if(currentUser.role !== "admin") return; // 🔥 ЗАЩИТА
+
     removeAdminUI();
 
     renderAdminPanelMenu();
     renderAdminProfiles();
     renderAdminUsers();
-    renderAdminOrders(); // 👈 добавили
+    renderAdminOrders();
 
     showAdminTab("profiles");
 }
@@ -2103,6 +2109,8 @@ function showAdminTab(tab){
 }
 
 function renderAdminOrders(){
+
+    if(currentUser.role !== "admin") return; // 🔥 ВАЖНО
 
     const old = document.getElementById("adminOrders");
     if(old) old.remove();
