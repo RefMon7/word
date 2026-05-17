@@ -1906,49 +1906,41 @@ function renderAdminProfiles(){
         return;
     }
 
-    const app = document.getElementById("app");
-
-    const app = document.getElementById("app");
-
-    let panel = document.getElementById("adminProfiles");
-
-    if(!panel){
-
-        panel = document.createElement("div");
-        panel.className = "card";
-        panel.id = "adminProfiles";
-
-        panel.innerHTML = `
-            <h2>Проверка профилей исполнителей</h2>
-            <div id="adminProfilesList"></div>
-        `;
-
-        app.appendChild(panel);
+    const oldPanel = document.getElementById("adminProfiles");
+    if(oldPanel){
+        oldPanel.remove();
     }
 
-    const list =
-        document.getElementById("adminProfilesList");
+    const app = document.getElementById("app");
+
+    let panel = document.createElement("div");
+    panel.className = "card";
+    panel.id = "adminProfiles";
+
+    panel.innerHTML = `
+        <h2>Проверка профилей исполнителей</h2>
+        <div id="adminProfilesList"></div>
+    `;
+
+    app.appendChild(panel);
+
+    const list = document.getElementById("adminProfilesList");
 
     list.innerHTML = "";
 
-    const executors =
-        users.filter(u => u.role === "executor");
+    const executors = users.filter(u => u.role === "executor");
 
     executors.forEach(executor => {
 
-        const div =
-            document.createElement("div");
-
+        const div = document.createElement("div");
         div.className = "profileCard";
 
         div.innerHTML = `
-
             <div class="profileName">
                 ${executor.profile?.name || executor.username}
             </div>
 
             <div class="profileInfo">
-
                 📍 ${executor.profile?.location || "—"} <br>
                 📞 ${executor.profile?.phone || "—"} <br><br>
 
@@ -1963,32 +1955,24 @@ function renderAdminProfiles(){
             </div>
         `;
 
-        const panelBtns =
-            document.createElement("div");
-
+        const panelBtns = document.createElement("div");
         panelBtns.className = "adminPanel";
 
-        const approveBtn =
-            document.createElement("button");
-
+        const approveBtn = document.createElement("button");
         approveBtn.className = "publishBtn";
         approveBtn.innerText = "Одобрить";
 
         approveBtn.onclick = () => {
-
             executor.profileStatus = "approved";
             saveUsers();
             renderAdminProfiles();
         };
 
-        const rejectBtn =
-            document.createElement("button");
-
+        const rejectBtn = document.createElement("button");
         rejectBtn.className = "deleteBtn";
         rejectBtn.innerText = "Отклонить";
 
         rejectBtn.onclick = () => {
-
             executor.profileStatus = "rejected";
             saveUsers();
             renderAdminProfiles();
@@ -1998,7 +1982,6 @@ function renderAdminProfiles(){
         panelBtns.appendChild(rejectBtn);
 
         div.appendChild(panelBtns);
-
         list.appendChild(div);
     });
 }
