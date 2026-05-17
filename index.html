@@ -1297,8 +1297,16 @@ function showApp(){
     }
 
     if(currentUser.role === "admin"){
-        roleText = "Администратор";
-    }
+    roleText = "Администратор";
+
+    document.getElementById("customerPanel").classList.add("hidden");
+    document.getElementById("executorsPanel").classList.add("hidden");
+    document.getElementById("subscriptionPanel").classList.add("hidden");
+    document.getElementById("executorProfilePanel").classList.add("hidden");
+    document.getElementById("filterPanel").classList.add("hidden");
+
+    renderAdminUI(); // 👈 ОДНА функция
+}
 
     document.getElementById("currentRole")
         .innerText = roleText;
@@ -1904,19 +1912,13 @@ if(
 /* ADMIN PROFILE MODERATION */
 function renderAdminProfiles(){
 
-    if(!currentUser || currentUser.role !== "admin"){
-        return;
-    }
-
     const oldPanel = document.getElementById("adminProfiles");
-    if(oldPanel){
-        oldPanel.remove();
-    }
+    if(oldPanel) oldPanel.remove();
 
     const app = document.getElementById("app");
 
     let panel = document.createElement("div");
-    panel.className = "card";
+    panel.className = "card hidden";
     panel.id = "adminProfiles";
 
     panel.innerHTML = `
@@ -1927,8 +1929,6 @@ function renderAdminProfiles(){
     app.appendChild(panel);
 
     const list = document.getElementById("adminProfilesList");
-
-    list.innerHTML = "";
 
     const executors = users.filter(u => u.role === "executor");
 
@@ -1986,6 +1986,116 @@ function renderAdminProfiles(){
         div.appendChild(panelBtns);
         list.appendChild(div);
     });
+}
+
+
+function renderAdminUsers(){
+
+    const old = document.getElementById("adminUsers");
+    if(old) old.remove();
+
+    const app = document.getElementById("app");
+
+    const panel = document.createElement("div");
+    panel.className = "card hidden";
+    panel.id = "adminUsers";
+
+    panel.innerHTML = `
+        <h2>Пользователи</h2>
+        <div id="adminUsersList"></div>
+    `;
+
+    app.appendChild(panel);
+
+    const list = document.getElementById("adminUsersList");
+
+    users.forEach(u => {
+
+        const div = document.createElement("div");
+        div.className = "profileCard";
+
+        div.innerHTML = `
+            <div class="profileName">${u.username}</div>
+
+            <div class="profileInfo">
+                Роль: ${u.role} <br>
+                Подписка: ${u.subscription ? "Да" : "Нет"} <br>
+                Статус профиля: ${u.profileStatus || "—"}
+            </div>
+        `;
+
+        list.appendChild(div);
+    });
+}
+
+function renderAdminUI(){
+
+    removeAdminUI(); // 🔥 сначала чистим старое
+
+    renderAdminPanelMenu();
+    renderAdminProfiles();
+    renderAdminUsers();
+
+    showAdminTab("profiles"); // по умолчанию открываем профили
+}
+
+
+function renderAdminPanelMenu(){
+
+    const old = document.getElementById("adminMenu");
+    if(old) old.remove();
+
+    const app = document.getElementById("app");
+
+    const menu = document.createElement("div");
+    menu.className = "card";
+    menu.id = "adminMenu";
+
+    menu.innerHTML = `
+        <h2>Админ панель</h2>
+
+        <div class="adminPanel">
+
+            <button class="loginBtn" onclick="showAdminTab('profiles')">
+                Профили
+            </button>
+
+            <button class="loginBtn" onclick="showAdminTab('users')">
+                Пользователи
+            </button>
+
+        </div>
+    `;
+
+    app.prepend(menu);
+}
+
+function showAdminTab(tab){
+
+    const profiles = document.getElementById("adminProfiles");
+    const users = document.getElementById("adminUsers");
+
+    if(profiles) profiles.classList.add("hidden");
+    if(users) users.classList.add("hidden");
+
+    if(tab === "profiles" && profiles){
+        profiles.classList.remove("hidden");
+    }
+
+    if(tab === "users" && users){
+        users.classList.remove("hidden");
+    }
+}
+
+function removeAdminUI(){
+
+    const menu = document.getElementById("adminMenu");
+    const profiles = document.getElementById("adminProfiles");
+    const users = document.getElementById("adminUsers");
+
+    if(menu) menu.remove();
+    if(profiles) profiles.remove();
+    if(users) users.remove();
 }
 
 /* AUTO LOGIN */
