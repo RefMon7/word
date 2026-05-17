@@ -1483,8 +1483,7 @@ function renderExecutors(){
         );
     }
 
-    // 🔥 РАЗДЕЛЕНИЕ ПО РОЛЯМ
-
+    // фильтр по ролям
     if(currentUser.role === "customer"){
         executors = executors.filter(e =>
             e.profileStatus === "approved"
@@ -1497,9 +1496,9 @@ function renderExecutors(){
         );
     }
 
-    if(executors.length === 0){
+    if(!executors || executors.length === 0){
         list.innerHTML =
-            "<p style='margin-top:15px;color:#9ca3af;'>Исполнителей нет</p>";
+            "<p style='color:#9ca3af;'>Исполнителей нет</p>";
         return;
     }
 
@@ -1518,8 +1517,8 @@ function renderExecutors(){
             </div>
 
             <div class="profileInfo">
-                📍 ${executor.profile?.location || "Не указано"} <br>
-                📞 ${executor.profile?.phone || "Не указано"} <br><br>
+                📍 ${executor.profile?.location || "—"} <br>
+                📞 ${executor.profile?.phone || "—"} <br><br>
                 ${executor.profile?.description || "Нет информации"}
             </div>
         `;
