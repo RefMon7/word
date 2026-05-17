@@ -1528,61 +1528,7 @@ function renderExecutors(){
 }
 
 
-    const category =
-        document.getElementById("executorFilter").value;
 
-    if(category !== "all"){
-
-        executors =
-            executors.filter(e =>
-                e.profile?.category === category
-            );
-    }
-
-    if(executors.length === 0){
-
-        list.innerHTML =
-            "<p style='margin-top:15px;color:#9ca3af;'>Исполнителей нет</p>";
-
-        return;
-    }
-
-    executors.forEach(executor => {
-
-        const div =
-            document.createElement("div");
-
-        div.className = "profileCard";
-
-        div.innerHTML = `
-
-            <div class="badge">
-                ${executor.profile?.category || "Без категории"}
-            </div>
-
-            <div class="profileName">
-                ${executor.profile?.name || executor.username}
-            </div>
-
-            <div class="profileInfo">
-
-                📍 ${executor.profile?.location || "Не указано"}
-
-                <br>
-
-                📞 ${executor.profile?.phone || "Не указано"}
-
-                <br><br>
-
-                ${executor.profile?.description || "Нет информации"}
-
-            </div>
-
-        `;
-
-        list.appendChild(div);
-    });
-}
 
 /* SUB */
 function updateSubscriptionStatus(){
