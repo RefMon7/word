@@ -1360,9 +1360,19 @@ function showApp(){
 
     renderOrders();
 
-    if(currentUser.role === "admin"){
-        renderAdminProfiles();
+    const adminPanel =
+    document.getElementById("adminProfiles");
+
+if(currentUser.role === "admin"){
+
+    renderAdminProfiles();
+
+}else{
+
+    if(adminPanel){
+        adminPanel.remove();
     }
+}
 }
 
 /* PROFILE SAVE */
