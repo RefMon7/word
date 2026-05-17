@@ -1770,26 +1770,7 @@ function renderOrders(){
             `;
         }
 
-        /* EXECUTOR */
-        if(
-            currentUser.role === "executor" &&
-            order.published &&
-            !order.acceptedBy
-        ){
-
-            const btn =
-                document.createElement("button");
-
-            btn.className = "loginBtn";
-
-            btn.innerText =
-                "Принять заказ";
-
-            btn.onclick = () =>
-                acceptOrder(order.id);
-
-            div.appendChild(btn);
-        }
+      
 
 /* CUSTOMER DELETE */
 if(
